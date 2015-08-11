@@ -1,11 +1,17 @@
 package com.gusbicalho.predict.data;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Pair;
+
+import java.util.ArrayList;
 
 public class PredictionsProvider extends ContentProvider {
 
@@ -25,6 +31,98 @@ public class PredictionsProvider extends ContentProvider {
         matcher.addURI(authority, PredictionsContract.PATH_PREDICTIONS + "/#", PREDICTION_ITEM);
 
         return matcher;
+    }
+
+    public static final class Util {
+        public static final String[] PREDICTION_PROJECTION = new String[] {
+                PredictionsContract.PredictionEntry.COLUMN_QUESTION,
+                PredictionsContract.PredictionEntry. COLUMN_DETAIL,
+                PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE,
+                PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT,
+                PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN,
+                PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN,
+                PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX,
+                PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE,
+                PredictionsContract.PredictionEntry.COLUMN_ORDER,
+        };
+        public static final int INDEX_QUESTION = 0;
+        public static final int INDEX_DETAIL = 1;
+        public static final int INDEX_ANSWER_TYPE = 2;
+        public static final int INDEX_ANSWER_TEXT = 3;
+        public static final int INDEX_ANSWER_BOOLEAN = 4;
+        public static final int INDEX_ANSWER_MIN = 5;
+        public static final int INDEX_ANSWER_MAX = 6;
+        public static final int INDEX_CONFIDENCE = 7;
+        public static final int INDEX_ORDER = 8;
+
+        public static Cursor getPrediction(Context context, long id) {
+            return context.getContentResolver().query(
+                    PredictionsContract.PredictionEntry.CONTENT_URI,
+                    PREDICTION_PROJECTION,
+                    PredictionsContract.PredictionEntry._ID + " = ?",
+                    new String[]{"" + id}, null
+            );
+        }
+        public static boolean removePrediction(Context context, long id) {
+            long rowsDeleted = context.getContentResolver().delete(
+                    PredictionsContract.PredictionEntry.CONTENT_URI,
+                    PredictionsContract.PredictionEntry._ID + " = ?",
+                    new String[]{"" + id});
+            return rowsDeleted > 0;
+        }
+        public static long insertPrediction(Context context, String question, String detail,
+                                            @PredictionsContract.PredictionEntry.AnswerType int answerType,
+                                            Object answer, double confidence) {
+            String answerText = null;
+            Boolean answerBoolean = null;
+            Double answerMin = null, answerMax = null;
+            switch (answerType) {
+                case PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN: {
+                    answerBoolean = (Boolean) answer;
+                    break;
+                }
+                case PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT: {
+                    answerText = answer.toString();
+                    break;
+                }
+                case PredictionsContract.PredictionEntry.ANSWER_TYPE_EXCLUSIVE_RANGE:
+                case PredictionsContract.PredictionEntry.ANSWER_TYPE_INCLUSIVE_RANGE: {
+                    Pair<Double, Double> range = (Pair<Double, Double>) answer;
+                    answerMin = Math.min(range.first, range.second);
+                    answerMax = Math.max(range.first, range.second);
+                    break;
+                }
+            }
+
+            ContentValues predValues = new ContentValues();
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_QUESTION, question);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, detail);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, answerType);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN, answerBoolean);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT, answerText);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, answerMin);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, answerMax);
+            predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, confidence);
+
+            Uri insertedUri = context.getContentResolver().insert(PredictionsContract.PredictionEntry.CONTENT_URI, predValues);
+            return ContentUris.parseId(insertedUri);
+        }
+        public static long insertPrediction(Context context, String question, String detail, boolean answer, double confidence) {
+            return insertPrediction(context, question, detail, PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN, answer, confidence);
+        }
+        public static long insertPrediction(Context context, String question, String detail, Pair<Double, Double> answer, boolean exclusive, double confidence) {
+            return insertPrediction(context, question, detail,
+                    exclusive ?
+                            PredictionsContract.PredictionEntry.ANSWER_TYPE_EXCLUSIVE_RANGE :
+                            PredictionsContract.PredictionEntry.ANSWER_TYPE_INCLUSIVE_RANGE,
+                    answer, confidence);
+        }
+        public static long insertPrediction(Context context, String question, String detail, double answerMin, double answerMax, boolean exclusive, double confidence) {
+            return insertPrediction(context, question, detail, new Pair<>(answerMin, answerMax), exclusive, confidence);
+        }
+        public static long insertPrediction(Context context, String question, String detail, String answer, double confidence) {
+            return insertPrediction(context, question, detail, PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT, answer, confidence);
+        }
     }
 
 
