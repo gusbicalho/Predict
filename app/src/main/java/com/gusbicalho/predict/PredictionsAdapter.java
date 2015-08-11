@@ -185,6 +185,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         final int pos = viewHolder.getAdapterPosition();
         final Context context = viewHolder.itemView.getContext();
         final Prediction pred = preds.remove(pos);
+        expanded.remove(pred);
         notifyItemRemoved(pos);
         String msg = context.getString(
                 direction == ItemTouchHelper.RIGHT ?
