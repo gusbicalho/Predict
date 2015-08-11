@@ -20,9 +20,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
-/**
- * Created by Gustavo on 05/08/2015.
- */
 public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.PredictionsAdapterViewHolder> {
     private static final String TAG = PredictionsAdapter.class.getSimpleName();
 
@@ -85,76 +82,8 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         }
     }
 
-    private static final int ANSWER_TYPE_BOOLEAN = 0;
-    private static final int ANSWER_TYPE_EXCLUSIVE_RANGE = 1;
-    private static final int ANSWER_TYPE_INCLUSIVE_RANGE = 2;
-    private static final int ANSWER_TYPE_TEXT = 3;
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ANSWER_TYPE_BOOLEAN, ANSWER_TYPE_EXCLUSIVE_RANGE, ANSWER_TYPE_INCLUSIVE_RANGE, ANSWER_TYPE_TEXT})
-    private @interface AnswerType {}
-
     private static final int VIEW_TYPE_SMALL = 0;
     private static final int VIEW_TYPE_EXPANDED = 1;
-
-    private static class Prediction {
-        private String mQuestion;
-        private String mDetail;
-        @AnswerType private int mAnswerType;
-        private Object mAnswer;
-        private double mConfidence;
-
-        private Prediction(String question, String detail, int answerType, Object answer, double confidence) {
-            switch (answerType) {
-                case ANSWER_TYPE_EXCLUSIVE_RANGE:
-                case ANSWER_TYPE_INCLUSIVE_RANGE: {
-                    Pair<Double, Double> range = (Pair<Double, Double>) answer;
-                    if (range.second < range.first) {
-                        answer = new Pair<>(range.second, range.first);
-                    }
-                    break;
-                }
-            }
-            this.mQuestion = question;
-            this.mDetail = detail;
-            this.mAnswerType = answerType;
-            this.mAnswer = answer;
-            this.mConfidence = confidence;
-        }
-
-        public Prediction(String question, String detail, boolean answer, double confidence) {
-            this(question, detail, ANSWER_TYPE_BOOLEAN, answer, confidence);
-        }
-        public Prediction(String question, String detail, Pair<Double, Double> answer, boolean exclusive, double confidence) {
-            this(question, detail, exclusive ? ANSWER_TYPE_EXCLUSIVE_RANGE : ANSWER_TYPE_INCLUSIVE_RANGE, answer, confidence);
-        }
-        public Prediction(String question, String detail, double answerMin, double answerMax, boolean exclusive, double confidence) {
-            this(question, detail, new Pair<>(answerMin, answerMax), exclusive, confidence);
-        }
-        public Prediction(String question, String detail, String answer, double confidence) {
-            this(question, detail, ANSWER_TYPE_TEXT, answer, confidence);
-        }
-
-        public String getQuestion() {
-            return mQuestion;
-        }
-
-        public String getDetail() {
-            return mDetail;
-        }
-
-        @AnswerType
-        public int getAnswerType() {
-            return mAnswerType;
-        }
-
-        public Object getAnswer() {
-            return mAnswer;
-        }
-
-        public double getConfidence() {
-            return mConfidence;
-        }
-    }
 
     @Nullable
     private OnStartDragListener mStartDragListener;
@@ -212,22 +141,22 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
     private void bindAnswer(PredictionsAdapterViewHolder viewHolder, Prediction pred) {
         Context context = viewHolder.mAnswer.getContext();
         switch (pred.getAnswerType()) {
-            case ANSWER_TYPE_BOOLEAN: {
+            case Prediction.ANSWER_TYPE_BOOLEAN: {
                 boolean boolAnswer = (Boolean) pred.getAnswer();
                 viewHolder.mAnswer.setText(boolAnswer ? R.string.prediction_answer_true : R.string.prediction_answer_false);
                 break;
             }
-            case ANSWER_TYPE_EXCLUSIVE_RANGE:
-            case ANSWER_TYPE_INCLUSIVE_RANGE: {
+            case Prediction.ANSWER_TYPE_EXCLUSIVE_RANGE:
+            case Prediction.ANSWER_TYPE_INCLUSIVE_RANGE: {
                 Pair<Double, Double> rangeAnswer = (Pair<Double, Double>) pred.getAnswer();
-                boolean isExclusive = pred.getAnswerType() == ANSWER_TYPE_EXCLUSIVE_RANGE;
+                boolean isExclusive = pred.getAnswerType() == Prediction.ANSWER_TYPE_EXCLUSIVE_RANGE;
                 viewHolder.mAnswer.setText(context.getString(
                         isExclusive ? R.string.prediction_answer_exclusive_range : R.string.prediction_answer_inclusive_range,
                         rangeAnswer.first, rangeAnswer.second
                 ));
                 break;
             }
-            case ANSWER_TYPE_TEXT: {
+            case Prediction.ANSWER_TYPE_TEXT: {
                 viewHolder.mAnswer.setText(pred.getAnswer().toString());
                 break;
             }
