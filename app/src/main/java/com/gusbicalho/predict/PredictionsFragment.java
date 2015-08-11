@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,22 +18,7 @@ public class PredictionsFragment extends Fragment {
 
     private PredictionsAdapter mPredictionsAdapter;
     private RecyclerView mRecyclerView;
-    private ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                public boolean isLongPressDragEnabled() {
-                    return false;
-                }
-                public boolean onMove(RecyclerView recyclerView,
-                                      RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    final int fromPos = viewHolder.getAdapterPosition();
-                    final int toPos = target.getAdapterPosition();
-                    return mPredictionsAdapter.move(fromPos, toPos);
-                }
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    mPredictionsAdapter.dismiss(viewHolder, direction);
-                }
-            });
+    private PredictionsItemTouchHelper mItemTouchHelper;
     private OnStartDragListener mItemDragListener = new OnStartDragListener() {
         @Override
         public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
@@ -66,6 +50,7 @@ public class PredictionsFragment extends Fragment {
 
         mPredictionsAdapter = new PredictionsAdapter(mItemDragListener);
         mRecyclerView.setAdapter(mPredictionsAdapter);
+        mItemTouchHelper = new PredictionsItemTouchHelper(mPredictionsAdapter);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         return rootView;

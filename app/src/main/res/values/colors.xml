@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dismiss_right">#4CAF50</color>
+    <color name="dismiss_wrong">#FF5722</color>
+</resources>

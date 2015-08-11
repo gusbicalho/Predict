@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Predict</string>
+    <string name="content_authority">com.gusbicalho.predict</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -21,5 +22,8 @@
     <string name="prediction_answer_false">No!</string>
     <string name="prediction_answer_exclusive_range"><xliff:g id="min">%1$1.00f</xliff:g> &lt; x &lt; <xliff:g id="max">%2$1.00f</xliff:g></string>
     <string name="prediction_answer_inclusive_range"><xliff:g id="min">%1$1.00f</xliff:g> &#8804; x &#8804; <xliff:g id="max">%2$1.00f</xliff:g></string>
+    <string name="prediction_dismiss_snackbar_right">Got one right: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_wrong">Got one wrong: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_undo">Undo</string>
 
 </resources>

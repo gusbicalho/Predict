@@ -1,65 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-              style="@style/Base.Widget.AppCompat.ListView"
-    >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:id="@+id/list_item_background">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dismiss_right"
+        android:id="@+id/list_item_bg_swipe_right"
+        android:visibility="invisible">
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/list_item_prediction_handle"
-        android:src="@drawable/ic_reorder_grey_700_24dp"
-        android:scaleType="center"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="20dp"
-        android:clickable="false"
-        android:longClickable="true"/>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_check_white_36dp"
+            android:layout_gravity="left|center_vertical"
+            android:scaleType="center"/>
+    </FrameLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingBottom="20dp">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dismiss_wrong"
+        android:id="@+id/list_item_bg_swipe_left"
+        android:visibility="invisible">
 
-        <TextView
-            tools:text="Prediction short description?"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_item_prediction_shortDescription"
-            android:textSize="@dimen/abc_text_size_subhead_material"
-            android:textColor="@color/primary_text_default_material_light"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_clear_white_36dp"
+            android:layout_gravity="right|center_vertical"
+            android:scaleType="center"/>
+    </FrameLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:minHeight="?android:attr/listPreferredItemHeight"
+                  style="@style/Base.Widget.AppCompat.ListView"
+                  android:id="@+id/list_item_container"
+                  android:background="@color/background_material_light">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/list_item_prediction_handle"
+            android:src="@drawable/ic_reorder_grey_700_24dp"
+            android:scaleType="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="20dp"
-            android:ellipsize="end"
-            android:lines="1"/>
+            android:clickable="false"
+            android:longClickable="true"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="20dp">
+
+            <TextView
+                tools:text="Prediction short description?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_prediction_question"
+                android:textSize="@dimen/abc_text_size_subhead_material"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:lines="1"/>
+
+            <TextView
+                tools:text="Answer! Bacon ipsum dolor amet pastrami ground round pork, ham hock bacon alcatra shoulder pork belly leberkas tail tenderloin flank salami boudin short loin."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_prediction_answer"
+                android:textSize="@dimen/abc_text_size_body_1_material"
+                android:textColor="@color/abc_secondary_text_material_light"
+                android:lines="2"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
 
         <TextView
-            tools:text="Answer! Bacon ipsum dolor amet pastrami ground round pork, ham hock bacon alcatra shoulder pork belly leberkas tail tenderloin flank salami boudin short loin."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_item_prediction_answer"
-            android:textSize="@dimen/abc_text_size_body_1_material"
-            android:textColor="@color/abc_secondary_text_material_light"
-            android:lines="2"
-            android:ellipsize="end"/>
+            tools:text="30%"
+            android:id="@+id/list_item_prediction_confidence"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/primary_text_default_material_light"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"/>
+
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="30%"
-        android:id="@+id/list_item_prediction_confidence"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/primary_text_default_material_light"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"/>
-
-
-</LinearLayout>
+</FrameLayout>

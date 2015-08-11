@@ -6,17 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,7 +27,11 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
     private static final String TAG = PredictionsAdapter.class.getSimpleName();
 
     public class PredictionsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        public final TextView mShortDesc;
+        public final View mBackground;
+        public final View mSwipeLeft;
+        public final View mSwipeRight;
+        public final View mContainer;
+        public final TextView mQuestion;
         public final TextView mAnswer;
         @Nullable
         public final TextView mDetail;
@@ -41,7 +40,11 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         private Prediction mPrediction;
         public PredictionsAdapterViewHolder(View view) {
             super(view);
-            mShortDesc = (TextView) view.findViewById(R.id.list_item_prediction_shortDescription);
+            mBackground = view.findViewById(R.id.list_item_background);
+            mSwipeLeft = view.findViewById(R.id.list_item_bg_swipe_left);
+            mSwipeRight = view.findViewById(R.id.list_item_bg_swipe_right);
+            mContainer = view.findViewById(R.id.list_item_container);
+            mQuestion = (TextView) view.findViewById(R.id.list_item_prediction_question);
             mDetail = (TextView) view.findViewById(R.id.list_item_prediction_detail);
             mAnswer = (TextView) view.findViewById(R.id.list_item_prediction_answer);
             mConfidence = (TextView) view.findViewById(R.id.list_item_prediction_confidence);
@@ -94,13 +97,13 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
     private static final int VIEW_TYPE_EXPANDED = 1;
 
     private static class Prediction {
-        private String mShortDesc;
+        private String mQuestion;
         private String mDetail;
         @AnswerType private int mAnswerType;
         private Object mAnswer;
         private double mConfidence;
 
-        private Prediction(String shortDesc, String longDesc, int answerType, Object answer, double confidence) {
+        private Prediction(String question, String detail, int answerType, Object answer, double confidence) {
             switch (answerType) {
                 case ANSWER_TYPE_EXCLUSIVE_RANGE:
                 case ANSWER_TYPE_INCLUSIVE_RANGE: {
@@ -111,28 +114,28 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                     break;
                 }
             }
-            this.mShortDesc = shortDesc;
-            this.mDetail = longDesc;
+            this.mQuestion = question;
+            this.mDetail = detail;
             this.mAnswerType = answerType;
             this.mAnswer = answer;
             this.mConfidence = confidence;
         }
 
-        public Prediction(String shortDesc, String longDesc, boolean answer, double confidence) {
-            this(shortDesc, longDesc, ANSWER_TYPE_BOOLEAN, answer, confidence);
+        public Prediction(String question, String detail, boolean answer, double confidence) {
+            this(question, detail, ANSWER_TYPE_BOOLEAN, answer, confidence);
         }
-        public Prediction(String shortDesc, String longDesc, Pair<Double, Double> answer, boolean exclusive, double confidence) {
-            this(shortDesc, longDesc, exclusive ? ANSWER_TYPE_EXCLUSIVE_RANGE : ANSWER_TYPE_INCLUSIVE_RANGE, answer, confidence);
+        public Prediction(String question, String detail, Pair<Double, Double> answer, boolean exclusive, double confidence) {
+            this(question, detail, exclusive ? ANSWER_TYPE_EXCLUSIVE_RANGE : ANSWER_TYPE_INCLUSIVE_RANGE, answer, confidence);
         }
-        public Prediction(String shortDesc, String longDesc, double answerMin, double answerMax, boolean exclusive, double confidence) {
-            this(shortDesc, longDesc, new Pair<>(answerMin, answerMax), exclusive, confidence);
+        public Prediction(String question, String detail, double answerMin, double answerMax, boolean exclusive, double confidence) {
+            this(question, detail, new Pair<>(answerMin, answerMax), exclusive, confidence);
         }
-        public Prediction(String shortDesc, String longDesc, String answer, double confidence) {
-            this(shortDesc, longDesc, ANSWER_TYPE_TEXT, answer, confidence);
+        public Prediction(String question, String detail, String answer, double confidence) {
+            this(question, detail, ANSWER_TYPE_TEXT, answer, confidence);
         }
 
-        public String getShortDesc() {
-            return mShortDesc;
+        public String getQuestion() {
+            return mQuestion;
         }
 
         public String getDetail() {
@@ -191,7 +194,8 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         viewHolder.setPrediction(pred);
 
         Context context = viewHolder.mAnswer.getContext();
-        viewHolder.mShortDesc.setText(pred.getShortDesc());
+        viewHolder.mContainer.setTranslationX(0.0f);
+        viewHolder.mQuestion.setText(pred.getQuestion());
         viewHolder.mConfidence.setText(context.getString(R.string.prediction_confidence, 100.0 * pred.getConfidence()));
         if (viewHolder.mDetail != null) {
             viewHolder.mDetail.setText(
@@ -238,7 +242,9 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         return preds.size();
     }
 
-    public boolean move(int fromPos, int toPos) {
+    public boolean move(RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        final int fromPos = viewHolder.getAdapterPosition();
+        final int toPos = target.getAdapterPosition();
         Prediction pred = preds.get(fromPos);
         preds.remove(fromPos);
         preds.add(toPos, pred);
@@ -251,8 +257,14 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         final Context context = viewHolder.itemView.getContext();
         final Prediction pred = preds.remove(pos);
         notifyItemRemoved(pos);
-        Snackbar.make(viewHolder.itemView, "Dismissed \""+pred.getShortDesc()+"\"", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Undo", new View.OnClickListener() {
+        String msg = context.getString(
+                direction == ItemTouchHelper.RIGHT ?
+                        R.string.prediction_dismiss_snackbar_right :
+                        R.string.prediction_dismiss_snackbar_wrong,
+                pred.getQuestion()
+        );
+        Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         preds.add(pos, pred);
