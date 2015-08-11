@@ -1,7 +1,6 @@
 package com.gusbicalho.predict.data;
 
 import android.content.ContentProvider;
-import android.content.ContentProviderOperation;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Pair;
-
-import java.util.ArrayList;
 
 public class PredictionsProvider extends ContentProvider {
 
@@ -124,6 +121,16 @@ public class PredictionsProvider extends ContentProvider {
         }
         public static long insertPrediction(Context context, String question, String detail, String answer, double confidence) {
             return insertPrediction(context, question, detail, PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT, answer, confidence);
+        }
+
+        public static boolean setPredictionResult(Context context, long id, int result) {
+            ContentValues values = new ContentValues();
+            values.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, (int) Math.signum(result));
+            long rowsUpdated = context.getContentResolver().update(
+                    PredictionsContract.PredictionEntry.CONTENT_URI, values,
+                    PredictionsContract.PredictionEntry._ID + " = ?",
+                    new String[]{"" + id});
+            return rowsUpdated > 0;
         }
     }
 
