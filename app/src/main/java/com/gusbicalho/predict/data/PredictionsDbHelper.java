@@ -6,11 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.gusbicalho.predict.data.PredictionsContract.*;
 
-/**
- * Created by Gustavo on 11/08/2015.
- */
 public class PredictionsDbHelper extends SQLiteOpenHelper {
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 1;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -20,26 +17,17 @@ public class PredictionsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        /*
-        public static final String COLUMN_QUESTION = "question";
-        public static final String COLUMN_DETAIL = "detail";
-        public static final String COLUMN_ANSWER_TYPE = "answerType";
-        public static final String COLUMN_ANSWER_TEXT = "answerText";
-        public static final String COLUMN_ANSWER_BOOLEAN = "answerBoolean";
-        public static final String COLUMN_ANSWER_MIN = "answerMin";
-        public static final String COLUMN_ANSWER_MAX = "answerMax";
-        public static final String COLUMN_CONFIDENCE = "confidence";
-         */
         final String SQL_CREATE_PREDICTION_TABLE = "CREATE TABLE " + PredictionEntry.TABLE_NAME + " (" +
                 PredictionEntry._ID + " INTEGER PRIMARY KEY," +
                 PredictionEntry.COLUMN_QUESTION + " TEXT NOT NULL, " +
-                PredictionEntry.COLUMN_DETAIL + " TEXT NOT NULL, " +
+                PredictionEntry.COLUMN_DETAIL + " TEXT, " +
                 PredictionEntry.COLUMN_CONFIDENCE + " REAL NOT NULL, " +
                 PredictionEntry.COLUMN_ANSWER_TYPE + " INTEGER NOT NULL, " +
                 PredictionEntry.COLUMN_ANSWER_TEXT + " TEXT, " +
                 PredictionEntry.COLUMN_ANSWER_BOOLEAN + " INTEGER, " +
                 PredictionEntry.COLUMN_ANSWER_MIN + " REAL, " +
-                PredictionEntry.COLUMN_ANSWER_MAX + " REAL " +
+                PredictionEntry.COLUMN_ANSWER_MAX + " REAL, " +
+                PredictionEntry.COLUMN_ORDER + " INTEGER NOT NULL DEFAULT 0 " +
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_PREDICTION_TABLE);
