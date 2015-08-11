@@ -41,6 +41,7 @@ public class PredictionsProvider extends ContentProvider {
                 PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN,
                 PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX,
                 PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE,
+                PredictionsContract.PredictionEntry.COLUMN_CREATION_DATE,
                 PredictionsContract.PredictionEntry.COLUMN_RESULT,
         };
         public static final int INDEX_ID = 0;
@@ -52,7 +53,8 @@ public class PredictionsProvider extends ContentProvider {
         public static final int INDEX_ANSWER_MIN = 6;
         public static final int INDEX_ANSWER_MAX = 7;
         public static final int INDEX_CONFIDENCE = 8;
-        public static final int INDEX_RESULT = 9;
+        public static final int INDEX_CREATION_DATE = 9;
+        public static final int INDEX_RESULT = 10;
 
         public static Cursor getPrediction(Context context, long id) {
             return context.getContentResolver().query(

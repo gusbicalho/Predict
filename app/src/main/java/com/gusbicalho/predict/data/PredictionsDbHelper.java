@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.gusbicalho.predict.data.PredictionsContract.*;
 
 public class PredictionsDbHelper extends SQLiteOpenHelper {
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -27,6 +27,7 @@ public class PredictionsDbHelper extends SQLiteOpenHelper {
                 PredictionEntry.COLUMN_ANSWER_BOOLEAN + " INTEGER, " +
                 PredictionEntry.COLUMN_ANSWER_MIN + " REAL, " +
                 PredictionEntry.COLUMN_ANSWER_MAX + " REAL, " +
+                PredictionEntry.COLUMN_CREATION_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now')), " +
                 PredictionEntry.COLUMN_RESULT + " INTEGER NOT NULL DEFAULT 0 " +
                 ");";
 

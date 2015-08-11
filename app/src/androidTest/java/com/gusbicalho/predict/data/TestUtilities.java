@@ -110,7 +110,8 @@ public class TestUtilities extends AndroidTestCase {
         for (int i = 0; i < cursor.getColumnCount(); i++) {
             int type = cursor.getType(i);
             String fieldName = cursor.getColumnName(i);
-            if (PredictionsContract.PredictionEntry._ID.equals(fieldName))
+            if (PredictionsContract.PredictionEntry._ID.equals(fieldName) ||
+                    PredictionsContract.PredictionEntry.COLUMN_CREATION_DATE.equals(fieldName))
                 continue;
             Object value = expectedValues.get(fieldName);
             Object dbValue;
