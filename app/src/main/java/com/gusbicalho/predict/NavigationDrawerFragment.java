@@ -1,5 +1,6 @@
 package com.gusbicalho.predict;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -21,6 +22,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.gusbicalho.predict.data.PredictionsContract;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -241,6 +244,49 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    static ContentValues createBooleanPredictionValues() {
+        ContentValues predValues = new ContentValues();
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_QUESTION, "Will Dilma step out until the end of year?");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, (String) null);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN, true);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.3d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
+        return predValues;
+    }
+    static ContentValues createTextPredictionValues() {
+        ContentValues predValues = new ContentValues();
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_QUESTION, "What is The Silence?");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, "From Doctor Who series");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT, "Mindwash of the universe");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.1d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
+        return predValues;
+    }
+    static ContentValues createExclusiveRangePredictionValues() {
+        ContentValues predValues = new ContentValues();
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_QUESTION, "How many kilometers walked?");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, "A round on EcoPark is 7.5km");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_EXCLUSIVE_RANGE);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 6.0d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 23.0d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.8d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
+        return predValues;
+    }
+    static ContentValues createInclusiveRangePredictionValues() {
+        ContentValues predValues = new ContentValues();
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_QUESTION, "How many roads should a man walk down?");
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, (String) null);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_INCLUSIVE_RANGE);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 42.0d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 42.0d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.9d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
+        return predValues;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -248,7 +294,15 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Fill DB.", Toast.LENGTH_SHORT).show();
+            ContentValues[] bulkInsertContentValues = new ContentValues[] {
+                    createBooleanPredictionValues(),
+                    createTextPredictionValues(),
+                    createExclusiveRangePredictionValues(),
+                    createInclusiveRangePredictionValues()
+            };
+            int insertCount = getActivity().getContentResolver().bulkInsert(PredictionsContract.PredictionEntry.CONTENT_URI, bulkInsertContentValues);
+
             return true;
         }
 
