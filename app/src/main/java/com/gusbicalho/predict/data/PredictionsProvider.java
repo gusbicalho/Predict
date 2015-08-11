@@ -35,6 +35,7 @@ public class PredictionsProvider extends ContentProvider {
 
     public static final class Util {
         public static final String[] PREDICTION_PROJECTION = new String[] {
+                PredictionsContract.PredictionEntry._ID,
                 PredictionsContract.PredictionEntry.COLUMN_QUESTION,
                 PredictionsContract.PredictionEntry. COLUMN_DETAIL,
                 PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE,
@@ -43,17 +44,18 @@ public class PredictionsProvider extends ContentProvider {
                 PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN,
                 PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX,
                 PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE,
-                PredictionsContract.PredictionEntry.COLUMN_ORDER,
+                PredictionsContract.PredictionEntry.COLUMN_RESULT,
         };
-        public static final int INDEX_QUESTION = 0;
-        public static final int INDEX_DETAIL = 1;
-        public static final int INDEX_ANSWER_TYPE = 2;
-        public static final int INDEX_ANSWER_TEXT = 3;
-        public static final int INDEX_ANSWER_BOOLEAN = 4;
-        public static final int INDEX_ANSWER_MIN = 5;
-        public static final int INDEX_ANSWER_MAX = 6;
-        public static final int INDEX_CONFIDENCE = 7;
-        public static final int INDEX_ORDER = 8;
+        public static final int INDEX_ID = 0;
+        public static final int INDEX_QUESTION = 1;
+        public static final int INDEX_DETAIL = 2;
+        public static final int INDEX_ANSWER_TYPE = 3;
+        public static final int INDEX_ANSWER_TEXT = 4;
+        public static final int INDEX_ANSWER_BOOLEAN = 5;
+        public static final int INDEX_ANSWER_MIN = 6;
+        public static final int INDEX_ANSWER_MAX = 7;
+        public static final int INDEX_CONFIDENCE = 8;
+        public static final int INDEX_RESULT = 9;
 
         public static Cursor getPrediction(Context context, long id) {
             return context.getContentResolver().query(

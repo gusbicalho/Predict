@@ -66,7 +66,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN, true);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.3d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ORDER, 0);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
     static ContentValues createTextPredictionValues() {
@@ -76,7 +76,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT, "Mindwash of the universe");
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.1d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ORDER, 0);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
     static ContentValues createExclusiveRangePredictionValues() {
@@ -87,7 +87,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 6.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 23.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.8d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ORDER, 0);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
     static ContentValues createInclusiveRangePredictionValues() {
@@ -98,7 +98,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 42.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 42.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.9d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_ORDER, 0);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
 

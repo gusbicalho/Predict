@@ -27,7 +27,7 @@ public class PredictionsDbHelper extends SQLiteOpenHelper {
                 PredictionEntry.COLUMN_ANSWER_BOOLEAN + " INTEGER, " +
                 PredictionEntry.COLUMN_ANSWER_MIN + " REAL, " +
                 PredictionEntry.COLUMN_ANSWER_MAX + " REAL, " +
-                PredictionEntry.COLUMN_ORDER + " INTEGER NOT NULL DEFAULT 0 " +
+                PredictionEntry.COLUMN_RESULT + " INTEGER NOT NULL DEFAULT 0 " +
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_PREDICTION_TABLE);
