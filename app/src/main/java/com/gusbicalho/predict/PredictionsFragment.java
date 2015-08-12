@@ -18,6 +18,7 @@ import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
 import com.gusbicalho.predict.util.DividerItemDecoration;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class PredictionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int PREDICTIONS_LOADER = 0;
@@ -81,7 +82,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getActivity(), null));
+                new DividerItemDecoration(getActivity(), null, true, true));
 
         mPredictionsAdapter = new PredictionsAdapter();
         mRecyclerView.setAdapter(mPredictionsAdapter);
