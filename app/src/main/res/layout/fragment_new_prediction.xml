@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:divider="?android:attr/listDivider"
+              tools:context="com.gusbicalho.predict.NewPredictionFragment"
+              android:showDividers="middle">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_prediction_question"
+        android:hint="@string/new_prediction_hint_question"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:background="@android:color/transparent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_prediction_answer_selector"
+            android:prompt="@string/new_prediction_hint_answer_selector"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/new_prediction_hint_answer_selector"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/new_prediction_answer_selector_hint"/>
+
+    </FrameLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_prediction_answer_text"
+        android:hint="@string/new_prediction_hint_answer_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:background="@android:color/transparent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/new_prediction_detail"
+        android:hint="@string/new_prediction_hint_detail"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:background="@android:color/transparent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_weight="1"
+        android:gravity="top"/>
+</LinearLayout>

@@ -4,5 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="AppTheme.NewPredictionActivity" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_clear_white_24dp</item>
+    </style>
 
 </resources>

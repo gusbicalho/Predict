@@ -1,8 +1,11 @@
 package com.gusbicalho.predict;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
+import com.gusbicalho.predict.util.DividerItemDecoration;
 
 public class PredictionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -28,6 +32,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
     private PredictionsAdapter mPredictionsAdapter;
     private RecyclerView mRecyclerView;
     private View mEmptyView;
+    private FloatingActionButton mFabNewPrediction;
     private PredictionsItemTouchHelper mItemTouchHelper;
 
     /**
@@ -40,6 +45,14 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of events.
+     */
+    public interface Callback {
+        void onNewPredictionAction();
     }
 
     public PredictionsFragment() {}
@@ -57,9 +70,20 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
 
         mEmptyView = rootView.findViewById(R.id.recyclerview_prediction_empty);
 
+        mFabNewPrediction = (FloatingActionButton) rootView.findViewById(R.id.fab_new_prediction);
+        mFabNewPrediction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof Callback)
+                    ((Callback) getActivity()).onNewPredictionAction();
+            }
+        });
+
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_prediction);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getActivity(), null));
 
         mPredictionsAdapter = new PredictionsAdapter();
         mRecyclerView.setAdapter(mPredictionsAdapter);

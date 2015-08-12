@@ -1,5 +1,6 @@
 package com.gusbicalho.predict;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +10,7 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, PredictionsFragment.Callback {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -95,4 +96,8 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onNewPredictionAction() {
+        startActivity(new Intent(this, NewPredictionActivity.class));
+    }
 }
