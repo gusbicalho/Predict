@@ -10,8 +10,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/new_prediction_question"
-        android:hint="@string/new_prediction_hint_question"
+        android:id="@+id/edit_prediction_question"
+        android:hint="@string/edit_prediction_hint_question"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:background="@android:color/transparent"
         android:paddingTop="20dp"
@@ -23,11 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Spinner
+        <com.gusbicalho.predict.util.NoDefaultSpinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/new_prediction_answer_selector"
-            android:prompt="@string/new_prediction_hint_answer_selector"
+            android:layout_height="match_parent"
+            android:id="@+id/edit_prediction_answer_selector"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:spinnerMode="dropdown"
             android:dropDownWidth="match_parent"
@@ -38,22 +37,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/new_prediction_hint_answer_selector"
+            android:hint="@string/edit_prediction_hint_answer_selector"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_gravity="center_vertical"
-            android:id="@+id/new_prediction_answer_selector_hint"/>
+            android:id="@+id/edit_prediction_answer_selector_hint"/>
 
     </FrameLayout>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/new_prediction_answer_text"
-        android:hint="@string/new_prediction_hint_answer_text"
+        android:id="@+id/edit_prediction_answer_text"
+        android:hint="@string/edit_prediction_hint_answer_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:background="@android:color/transparent"
         android:paddingTop="20dp"
@@ -62,11 +61,96 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:visibility="gone"/>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_prediction_answer_range_container"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/edit_prediction_answer_range_min"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:hint="@string/edit_prediction_hint_answer_range_min"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_prediction_answer_range_label"
+            tools:text="@string/edit_prediction_answer_range_label_exclusive"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/edit_prediction_answer_range_max"
+            android:layout_weight="1"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/edit_prediction_hint_answer_range_max"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:text="@string/edit_prediction_hint_confidence"
+                android:textColor="@color/hint_foreground_material_light"
+                android:labelFor="@+id/edit_prediction_confidence"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="50%"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:labelFor="@+id/edit_prediction_confidence"
+                android:id="@+id/edit_prediction_confidence_value_label"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+        </LinearLayout>
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_prediction_confidence"
+            android:indeterminate="false"/>
+    </LinearLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/new_prediction_detail"
-        android:hint="@string/new_prediction_hint_detail"
+        android:id="@+id/edit_prediction_detail"
+        android:hint="@string/edit_prediction_hint_detail"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:background="@android:color/transparent"
         android:paddingLeft="@dimen/activity_horizontal_margin"

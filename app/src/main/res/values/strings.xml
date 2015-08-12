@@ -30,16 +30,26 @@
     <string name="prediction_answer_selector_true">Yes!</string>
     <string name="prediction_answer_selector_false">No!</string>
     <string name="prediction_answer_selector_text">Text (write below)</string>
-    <string name="prediction_answer_selector_inclusive_range">Inclusive range</string>
-    <string name="prediction_answer_selector_exclusive_range">Exclusive range</string>
+    <string name="prediction_answer_selector_inclusive_range">Inclusive range (enter below)</string>
+    <string name="prediction_answer_selector_exclusive_range">Exclusive range (enter below)</string>
 
     <string name="title_activity_new_prediction">New Prediction</string>
     <string name="new_prediction_discard_dialog_message">Discard the prediction?</string>
     <string name="new_prediction_discard_dialog_discard_button">Discard</string>
     <string name="new_prediction_discard_dialog_keep_editing_button">Keep Editing</string>
-    <string name="new_prediction_hint_question">What is the question?</string>
-    <string name="new_prediction_hint_detail">Any remarks about that?</string>
-    <string name="new_prediction_hint_answer_selector">What is the answer?</string>
-    <string name="new_prediction_hint_answer_text">Write your (short) answer here</string>
+
+    <string name="edit_prediction_notice_saved">Prediction saved</string>
+    <string name="edit_prediction_notice_save_failed_no_question">Please fill the question!</string>
+    <string name="edit_prediction_notice_save_failed_no_answer">Please choose an answer!</string>
+    <string name="edit_prediction_hint_question">What is the question?</string>
+    <string name="edit_prediction_hint_detail">Any remarks about that?</string>
+    <string name="edit_prediction_hint_answer_selector">What is the answer?</string>
+    <string name="edit_prediction_hint_answer_text">Write your (short) answer here</string>
+    <string name="edit_prediction_hint_answer_range_min">Minimum</string>
+    <string name="edit_prediction_hint_answer_range_max">Maximum</string>
+    <string name="edit_prediction_answer_range_label_inclusive">&#8804; x &#8804;</string>
+    <string name="edit_prediction_answer_range_label_exclusive">&lt; x &lt;</string>
+    <string name="edit_prediction_hint_confidence">How confident are you?</string>
+    <string name="edit_prediction_confidence_value_label"><xliff:g id="confidence">%1$d</xliff:g>%%</string>
 
 </resources>

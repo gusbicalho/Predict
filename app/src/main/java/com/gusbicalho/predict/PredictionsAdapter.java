@@ -115,9 +115,9 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         if (viewHolder.mDetail != null) {
             String detail = mCursor.getString(PredictionsProvider.Util.INDEX_DETAIL);
             viewHolder.mDetail.setText(
-                    detail != null ? context.getString(R.string.prediction_detail, detail) : null);
+                    detail != null && !detail.isEmpty() ? context.getString(R.string.prediction_detail, detail) : null);
             viewHolder.mDetail.setVisibility(
-                    detail != null ? View.VISIBLE : View.GONE
+                    detail != null && !detail.isEmpty() ? View.VISIBLE : View.GONE
             );
         }
         viewHolder.mCreationDate.setText(

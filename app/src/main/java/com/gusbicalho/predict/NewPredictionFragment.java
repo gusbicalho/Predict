@@ -1,7 +1,9 @@
 package com.gusbicalho.predict;
 
 import android.app.DialogFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,40 +13,48 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import com.gusbicalho.predict.data.PredictionsContract;
+import com.gusbicalho.predict.data.PredictionsProvider;
 
 public class NewPredictionFragment extends DialogFragment {
 
-    private static final int NO_SELECTION = -1;
     private static final int[] ANSWER_SELECTOR_OPTIONS_RESOURCES = new int[]{
-            NO_SELECTION,
             R.string.prediction_answer_selector_true,
             R.string.prediction_answer_selector_false,
             R.string.prediction_answer_selector_text,
             R.string.prediction_answer_selector_inclusive_range,
             R.string.prediction_answer_selector_exclusive_range
     };
-    private static final int ANSWER_SELECTOR_INDEX_NO_SELECTION = 0;
-    private static final int ANSWER_SELECTOR_INDEX_TRUE = 1;
-    private static final int ANSWER_SELECTOR_INDEX_FALSE = 2;
-    private static final int ANSWER_SELECTOR_INDEX_TEXT = 3;
-    private static final int ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE = 4;
-    private static final int ANSWER_SELECTOR_INDEX_EXCLUSIVE_RANGE = 5;
+    private static final int ANSWER_SELECTOR_INDEX_NO_SELECTION = -1;
+    private static final int ANSWER_SELECTOR_INDEX_TRUE = 0;
+    private static final int ANSWER_SELECTOR_INDEX_FALSE = 1;
+    private static final int ANSWER_SELECTOR_INDEX_TEXT = 2;
+    private static final int ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE = 3;
+    private static final int ANSWER_SELECTOR_INDEX_EXCLUSIVE_RANGE = 4;
+
+    private static final int CONFIDENCE_MAX = 100;
+    private static final int CONFIDENCE_DEFAULT = 50;
 
     private String[] mAnswerSelectorOptions;
     private Spinner mAnswerSelector;
     private TextView mAnswerSelectorHint;
     private EditText mAnswerText;
+    private View mAnswerRangeContainer;
+    private TextView mAnswerRangeLabel;
+    private EditText mAnswerRangeMin;
+    private EditText mAnswerRangeMax;
+    private SeekBar mConfidenceSelector;
+    private TextView mConfidenceValueLabel;
+    private EditText mQuestion;
+    private EditText mDetail;
 
     public interface Callback {
         void onSaveAction();
-    }
-
-    public NewPredictionFragment() {
     }
 
     @Override
@@ -53,9 +63,7 @@ public class NewPredictionFragment extends DialogFragment {
         setHasOptionsMenu(true);
 
         mAnswerSelectorOptions = new String[ANSWER_SELECTOR_OPTIONS_RESOURCES.length];
-        mAnswerSelectorOptions[0] = "";
-        // Loop starts at 1 to skip the NO_SELECTION item
-        for (int i = 1; i < ANSWER_SELECTOR_OPTIONS_RESOURCES.length; i++)
+        for (int i = 0; i < ANSWER_SELECTOR_OPTIONS_RESOURCES.length; i++)
             mAnswerSelectorOptions[i] = getString(ANSWER_SELECTOR_OPTIONS_RESOURCES[i]);
     }
 
@@ -70,9 +78,7 @@ public class NewPredictionFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_prediction_save) {
-            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_LONG).show();
-            if (getActivity() instanceof Callback)
-                ((Callback) getActivity()).onSaveAction();
+            saveAction();
             return true;
         }
 
@@ -84,11 +90,19 @@ public class NewPredictionFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_prediction, container, false);
 
-        mAnswerSelector = (Spinner) rootView.findViewById(R.id.new_prediction_answer_selector);
-        mAnswerSelectorHint = (TextView) rootView.findViewById(R.id.new_prediction_answer_selector_hint);
-        mAnswerText = (EditText) rootView.findViewById(R.id.new_prediction_answer_text);
+        mQuestion = (EditText) rootView.findViewById(R.id.edit_prediction_question);
+        mDetail = (EditText) rootView.findViewById(R.id.edit_prediction_detail);
+        mAnswerSelector = (Spinner) rootView.findViewById(R.id.edit_prediction_answer_selector);
+        mAnswerSelectorHint = (TextView) rootView.findViewById(R.id.edit_prediction_answer_selector_hint);
+        mAnswerText = (EditText) rootView.findViewById(R.id.edit_prediction_answer_text);
+        mAnswerRangeContainer = rootView.findViewById(R.id.edit_prediction_answer_range_container);
+        mAnswerRangeLabel = (TextView) rootView.findViewById(R.id.edit_prediction_answer_range_label);
+        mAnswerRangeMin = (EditText) rootView.findViewById(R.id.edit_prediction_answer_range_min);
+        mAnswerRangeMax = (EditText) rootView.findViewById(R.id.edit_prediction_answer_range_max);
+        mConfidenceSelector = (SeekBar) rootView.findViewById(R.id.edit_prediction_confidence);
+        mConfidenceValueLabel = (TextView) rootView.findViewById(R.id.edit_prediction_confidence_value_label);
 
-        mAnswerSelector.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mAnswerSelectorOptions));
+        mAnswerSelector.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mAnswerSelectorOptions));
         mAnswerSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -96,14 +110,127 @@ public class NewPredictionFragment extends DialogFragment {
                         position == ANSWER_SELECTOR_INDEX_NO_SELECTION ? View.VISIBLE : View.INVISIBLE);
                 mAnswerText.setVisibility(
                         position == ANSWER_SELECTOR_INDEX_TEXT ? View.VISIBLE : View.GONE);
+                if (position == ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE || position == ANSWER_SELECTOR_INDEX_EXCLUSIVE_RANGE) {
+                    mAnswerRangeContainer.setVisibility(View.VISIBLE);
+                    mAnswerRangeLabel.setText(
+                            position == ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE ?
+                                    R.string.edit_prediction_answer_range_label_inclusive :
+                                    R.string.edit_prediction_answer_range_label_exclusive
+                    );
+                } else {
+                    mAnswerRangeContainer.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 mAnswerSelectorHint.setVisibility(View.VISIBLE);
+                mAnswerText.setVisibility(View.GONE);
+                mAnswerRangeContainer.setVisibility(View.GONE);
             }
         });
 
+        mConfidenceSelector.setMax(CONFIDENCE_MAX);
+        mConfidenceSelector.setProgress(CONFIDENCE_DEFAULT);
+        mConfidenceValueLabel.setText(getString(R.string.edit_prediction_confidence_value_label, CONFIDENCE_DEFAULT));
+        mConfidenceSelector.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mConfidenceValueLabel.setText(getString(R.string.edit_prediction_confidence_value_label, progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+
         return rootView;
     }
+
+    private void saveFailed(int messageResId) {
+        Toast.makeText(getActivity(), messageResId, Toast.LENGTH_LONG).show();
+    }
+
+    private void saveAction() {
+        final String question = mQuestion.getText().toString();
+        final String detail = mDetail.getText().toString().trim();
+        final double confidence = mConfidenceSelector.getProgress()/(double)CONFIDENCE_MAX;
+
+        if (question.isEmpty()) {
+            saveFailed(R.string.edit_prediction_notice_save_failed_no_question);
+            return;
+        }
+
+        int answerSelectorIndex = mAnswerSelector.getSelectedItemPosition();
+        if (answerSelectorIndex == ANSWER_SELECTOR_INDEX_NO_SELECTION) {
+            saveFailed(R.string.edit_prediction_notice_save_failed_no_answer);
+            return;
+        }
+
+        @PredictionsContract.PredictionEntry.AnswerType
+        final int answerType;
+        final Object answer;
+        switch (answerSelectorIndex) {
+            case ANSWER_SELECTOR_INDEX_TRUE: {
+                answerType = PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN;
+                answer = true;
+                break;
+            }
+            case ANSWER_SELECTOR_INDEX_FALSE: {
+                answerType = PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN;
+                answer = false;
+                break;
+            }
+            case ANSWER_SELECTOR_INDEX_TEXT: {
+                answerType = PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT;
+                answer = mAnswerText.getText().toString();
+                if (answer.toString().isEmpty()) {
+                    saveFailed(R.string.edit_prediction_notice_save_failed_no_answer);
+                    return;
+                }
+                break;
+            }
+            case ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE:
+            case ANSWER_SELECTOR_INDEX_EXCLUSIVE_RANGE: {
+                answerType = answerSelectorIndex == ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE ?
+                        PredictionsContract.PredictionEntry.ANSWER_TYPE_INCLUSIVE_RANGE :
+                        PredictionsContract.PredictionEntry.ANSWER_TYPE_EXCLUSIVE_RANGE;
+                double min, max;
+                try {
+                    min = Double.parseDouble(mAnswerRangeMin.getText().toString());
+                    max = Double.parseDouble(mAnswerRangeMax.getText().toString());
+                } catch (NumberFormatException e) {
+                    saveFailed(R.string.edit_prediction_notice_save_failed_no_answer);
+                    return;
+                }
+                answer = new Pair<>(min, max);
+                break;
+            }
+            default: {
+                saveFailed(R.string.edit_prediction_notice_save_failed_no_answer);
+                return;
+            }
+        }
+
+        new AsyncTask<Void, Void, Long>() {
+            @Override
+            protected Long doInBackground(Void... params) {
+                return PredictionsProvider.Util.insertPrediction(getActivity(),
+                        question, detail.isEmpty() ? null : detail, answerType, answer, confidence);
+            }
+
+            @Override
+            protected void onPostExecute(Long newPredictionId) {
+                Toast.makeText(getActivity(), R.string.edit_prediction_notice_saved, Toast.LENGTH_LONG).show();
+                if (getActivity() instanceof Callback)
+                    ((Callback) getActivity()).onSaveAction();
+            }
+        }.execute();
+    }
+
+
+
 }
