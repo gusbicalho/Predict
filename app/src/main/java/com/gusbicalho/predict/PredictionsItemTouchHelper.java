@@ -25,7 +25,7 @@ public class PredictionsItemTouchHelper extends ItemTouchHelper {
         private final PredictionsAdapter mPredictionsAdapter;
 
         public Callback(@NonNull PredictionsAdapter adapter) {
-            super(0, ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
             mPredictionsAdapter = adapter;
         }
 

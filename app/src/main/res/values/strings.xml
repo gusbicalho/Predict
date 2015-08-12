@@ -26,6 +26,7 @@
     <string name="prediction_answer_inclusive_range"><xliff:g id="min">%1$g</xliff:g> &#8804; x &#8804; <xliff:g id="max">%2$g</xliff:g></string>
     <string name="prediction_dismiss_snackbar_right">Got one right: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_wrong">Got one wrong: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_delete">Deleted: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_undo">Undo</string>
 
     <string name="list_item_dismiss_wrong_description">Got wrong</string>

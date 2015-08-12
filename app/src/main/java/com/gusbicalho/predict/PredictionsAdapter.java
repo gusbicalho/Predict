@@ -1,5 +1,8 @@
 package com.gusbicalho.predict;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
@@ -10,8 +13,8 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
@@ -23,8 +26,8 @@ import java.util.Set;
 public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.PredictionsAdapterViewHolder> {
     private static final String TAG = PredictionsAdapter.class.getSimpleName();
 
-    private static final int SWIPE_DIRECTION_RIGHT = ItemTouchHelper.END;
-    private static final int SWIPE_DIRECTION_WRONG = ItemTouchHelper.START;
+    private static final int SWIPE_DIRECTION_RIGHT = ItemTouchHelper.RIGHT;
+    private static final int SWIPE_DIRECTION_WRONG = ItemTouchHelper.LEFT;
 
     public class PredictionsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public final View mBackground;
@@ -38,6 +41,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         public final TextView mConfidence;
         public final TextView mCreationDate;
         private Long mPredictionId;
+        private AlertDialog mLongClickDialog;
         public PredictionsAdapterViewHolder(View view) {
             super(view);
             mBackground = view.findViewById(R.id.list_item_background);
@@ -51,6 +55,44 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
             mCreationDate = (TextView) view.findViewById(R.id.list_item_prediction_creation_date);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
+            mLongClickDialog = makeLongClickDialog();
+        }
+
+        private AlertDialog makeLongClickDialog() {
+            final LayoutInflater inflater = LayoutInflater.from(itemView.getContext());
+            @SuppressLint("InflateParams")
+            final View dialogRootView = inflater.inflate(R.layout.list_item_prediction_long_click_dialog, null);
+
+            final Button bRight = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_right);
+            bRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_RIGHT);
+                    mLongClickDialog.dismiss();
+                }
+            });
+
+            final Button bWrong = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_wrong);
+            bWrong.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_WRONG);
+                    mLongClickDialog.dismiss();
+                }
+            });
+
+            final Button bDelete = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_delete);
+            bDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    delete(PredictionsAdapterViewHolder.this);
+                    mLongClickDialog.dismiss();
+                }
+            });
+
+            return new AlertDialog.Builder(itemView.getContext())
+                    .setView(dialogRootView)
+                    .create();
         }
 
         public Long getPredictionId() {
@@ -74,7 +116,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
 
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(v.getContext(), "Long clicked!", Toast.LENGTH_SHORT).show();
+            mLongClickDialog.show();
             return true;
         }
     }
@@ -201,6 +243,48 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                     @Override
                     public void onClick(View v) {
                         PredictionsProvider.Util.setPredictionResult(context, remId, 0);
+                    }
+                })
+                .show();
+    }
+
+    public void delete(RecyclerView.ViewHolder viewHolder) {
+        final Context context = viewHolder.itemView.getContext();
+
+        final int pos = viewHolder.getAdapterPosition();
+        mCursor.moveToPosition(pos);
+        final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
+        final String question = mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION);
+
+        final ContentValues predValues = new ContentValues();
+        for (int i = 0; i < mCursor.getColumnCount(); i++) {
+            switch (mCursor.getType(i)) {
+                case Cursor.FIELD_TYPE_INTEGER:
+                    predValues.put(mCursor.getColumnName(i), mCursor.getLong(i));
+                    break;
+                case Cursor.FIELD_TYPE_FLOAT:
+                    predValues.put(mCursor.getColumnName(i), mCursor.getDouble(i));
+                    break;
+                case Cursor.FIELD_TYPE_STRING:
+                    predValues.put(mCursor.getColumnName(i), mCursor.getString(i));
+                    break;
+                case Cursor.FIELD_TYPE_BLOB:
+                    predValues.put(mCursor.getColumnName(i), mCursor.getBlob(i));
+                    break;
+                default: // null
+            }
+        }
+
+        PredictionsProvider.Util.removePrediction(context, remId);
+        expanded.remove(remId);
+        notifyItemRemoved(pos);
+
+        String msg = context.getString(R.string.prediction_dismiss_snackbar_delete, question);
+        Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
+                .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        context.getContentResolver().insert(PredictionsContract.PredictionEntry.CONTENT_URI, predValues);
                     }
                 })
                 .show();
