@@ -32,15 +32,18 @@ public class PredictionsItemTouchHelper extends ItemTouchHelper {
             mPredictionsAdapter = adapter;
         }
 
+        @Override
         public boolean isLongPressDragEnabled() {
             return false;
         }
 
+        @Override
         public boolean onMove(RecyclerView recyclerView,
                               RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return mPredictionsAdapter.move(viewHolder, target);
+            return false;
         }
 
+        @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             mPredictionsAdapter.dismiss(viewHolder, direction);
         }

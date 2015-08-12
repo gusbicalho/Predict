@@ -175,20 +175,6 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         return mCursor;
     }
 
-
-    public boolean move(RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        /*
-        final int fromPos = viewHolder.getAdapterPosition();
-        final int toPos = target.getAdapterPosition();
-        Prediction pred = preds.get(fromPos);
-        preds.remove(fromPos);
-        preds.add(toPos, pred);
-        notifyItemMoved(fromPos, toPos);
-        return true;
-        */
-        return false;
-    }
-
     public void dismiss(RecyclerView.ViewHolder viewHolder, int direction) {
         final Context context = viewHolder.itemView.getContext();
 
