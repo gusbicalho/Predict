@@ -23,6 +23,9 @@ import java.util.Set;
 public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.PredictionsAdapterViewHolder> {
     private static final String TAG = PredictionsAdapter.class.getSimpleName();
 
+    private static final int SWIPE_DIRECTION_RIGHT = ItemTouchHelper.END;
+    private static final int SWIPE_DIRECTION_WRONG = ItemTouchHelper.START;
+
     public class PredictionsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public final View mBackground;
         public final View mSwipeLeft;
@@ -183,11 +186,12 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
         final String question = mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION);
 
-        PredictionsProvider.Util.setPredictionResult(context, remId, direction == ItemTouchHelper.RIGHT ? 1 : -1);
+        PredictionsProvider.Util.setPredictionResult(context, remId, direction == SWIPE_DIRECTION_RIGHT ? 1 : -1);
         expanded.remove(remId);
+        notifyItemRemoved(pos);
 
         String msg = context.getString(
-                direction == ItemTouchHelper.RIGHT ?
+                direction == SWIPE_DIRECTION_RIGHT ?
                         R.string.prediction_dismiss_snackbar_right :
                         R.string.prediction_dismiss_snackbar_wrong,
                 question
