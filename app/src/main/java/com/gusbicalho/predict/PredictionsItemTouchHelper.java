@@ -6,9 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-/**
- * Created by Gustavo on 10/08/2015.
- */
 public class PredictionsItemTouchHelper extends ItemTouchHelper {
     private final PredictionsAdapter mAdapter;
 

@@ -301,8 +301,7 @@ public class NavigationDrawerFragment extends Fragment {
                     createExclusiveRangePredictionValues(),
                     createInclusiveRangePredictionValues()
             };
-            int insertCount = getActivity().getContentResolver().bulkInsert(PredictionsContract.PredictionEntry.CONTENT_URI, bulkInsertContentValues);
-
+            getActivity().getContentResolver().bulkInsert(PredictionsContract.PredictionEntry.CONTENT_URI, bulkInsertContentValues);
             return true;
         }
 

@@ -17,6 +17,7 @@
 
 
     <string name="empty_prediction_list">No pending predictions. Make one now!</string>
+
     <string name="prediction_confidence"><xliff:g id="confidence">%1$1.0f</xliff:g>%%</string>
     <string name="prediction_detail">Obs: <xliff:g id="detail_text">%1$1s</xliff:g></string>
     <string name="prediction_answer_true">Yes!</string>
@@ -26,6 +27,9 @@
     <string name="prediction_dismiss_snackbar_right">Got one right: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_wrong">Got one wrong: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_undo">Undo</string>
+
+    <string name="list_item_dismiss_wrong_description">Got wrong</string>
+    <string name="list_item_dismiss_right_description">Got right</string>
 
     <string name="prediction_answer_selector_true">Yes!</string>
     <string name="prediction_answer_selector_false">No!</string>

@@ -1,9 +1,7 @@
 package com.gusbicalho.predict;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
