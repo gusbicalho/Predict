@@ -42,9 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        style="@style/Base.Widget.AppCompat.ListView"
         android:id="@+id/list_item_container"
-        android:background="@color/background_material_light"
+        android:background="@drawable/touch_selector"
         android:baselineAligned="false">
 
         <LinearLayout
