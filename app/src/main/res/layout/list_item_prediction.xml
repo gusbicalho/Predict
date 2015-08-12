@@ -41,24 +41,13 @@
                   android:id="@+id/list_item_container"
                   android:background="@color/background_material_light">
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/list_item_prediction_handle"
-            android:src="@drawable/ic_reorder_grey_700_24dp"
-            android:scaleType="center"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="20dp"
-            android:clickable="false"
-            android:longClickable="true"/>
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material">
 
             <TextView
                 tools:text="Prediction short description?"
@@ -83,16 +72,31 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="30%"
-            android:id="@+id/list_item_prediction_confidence"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/primary_text_default_material_light"
+            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"/>
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Aug 11, 15"
+                android:id="@+id/list_item_prediction_creation_date"
+                android:layout_gravity="right"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/abc_secondary_text_material_light"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="30%"
+                android:id="@+id/list_item_prediction_confidence"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_gravity="right"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>

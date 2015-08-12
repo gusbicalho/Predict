@@ -29,12 +29,6 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
     private RecyclerView mRecyclerView;
     private View mEmptyView;
     private PredictionsItemTouchHelper mItemTouchHelper;
-    private OnStartDragListener mItemDragListener = new OnStartDragListener() {
-        @Override
-        public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-            mItemTouchHelper.startDrag(viewHolder);
-        }
-    };
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -67,7 +61,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
 
-        mPredictionsAdapter = new PredictionsAdapter(mItemDragListener);
+        mPredictionsAdapter = new PredictionsAdapter();
         mRecyclerView.setAdapter(mPredictionsAdapter);
         mItemTouchHelper = new PredictionsItemTouchHelper(mPredictionsAdapter);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -88,7 +82,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
                 PredictionsContract.PredictionEntry.CONTENT_URI,
                 PredictionsProvider.Util.PREDICTION_PROJECTION,
                 PredictionsContract.PredictionEntry.COLUMN_RESULT + " = 0",
-                null, null);
+                null, PredictionsContract.PredictionEntry.COLUMN_CREATION_DATE + " DESC");
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +33,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         @Nullable
         public final TextView mDetail;
         public final TextView mConfidence;
-        public final View mReorderHandle;
+        public final TextView mCreationDate;
         private Long mPredictionId;
         public PredictionsAdapterViewHolder(View view) {
             super(view);
@@ -43,9 +45,8 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
             mDetail = (TextView) view.findViewById(R.id.list_item_prediction_detail);
             mAnswer = (TextView) view.findViewById(R.id.list_item_prediction_answer);
             mConfidence = (TextView) view.findViewById(R.id.list_item_prediction_confidence);
-            mReorderHandle = view.findViewById(R.id.list_item_prediction_handle);
+            mCreationDate = (TextView) view.findViewById(R.id.list_item_prediction_creation_date);
             view.setOnClickListener(this);
-            mReorderHandle.setOnLongClickListener(this);
             view.setOnLongClickListener(this);
         }
 
@@ -70,11 +71,6 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
 
         @Override
         public boolean onLongClick(View v) {
-            if (v == mReorderHandle && mStartDragListener != null) {
-                Toast.makeText(v.getContext(), "Handle long clicked!", Toast.LENGTH_SHORT).show();
-                mStartDragListener.onStartDrag(this);
-                return true;
-            }
             Toast.makeText(v.getContext(), "Long clicked!", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -83,15 +79,10 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
     private static final int VIEW_TYPE_SMALL = 0;
     private static final int VIEW_TYPE_EXPANDED = 1;
 
-    @Nullable
-    private OnStartDragListener mStartDragListener;
-
     private Cursor mCursor;
     private Set<Long> expanded = new HashSet<>();
 
-    public PredictionsAdapter(@Nullable OnStartDragListener startDragListener) {
-        this.mStartDragListener = startDragListener;
-    }
+    public PredictionsAdapter() {}
 
     @Override
     public int getItemViewType(int position) {
@@ -129,6 +120,11 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                     detail != null ? View.VISIBLE : View.GONE
             );
         }
+        viewHolder.mCreationDate.setText(
+                DateFormat
+                        .getDateFormat(context)
+                        .format(new Date(mCursor.getLong(PredictionsProvider.Util.INDEX_CREATION_DATE)*1000L))
+        );
         bindAnswer(viewHolder, mCursor);
     }
 
