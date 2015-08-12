@@ -28,6 +28,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
 
     private static final int SWIPE_DIRECTION_RIGHT = ItemTouchHelper.RIGHT;
     private static final int SWIPE_DIRECTION_WRONG = ItemTouchHelper.LEFT;
+    private final int mResultFilter;
 
     public class PredictionsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public final View mBackground;
@@ -61,25 +62,49 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         private AlertDialog makeLongClickDialog() {
             final LayoutInflater inflater = LayoutInflater.from(itemView.getContext());
             @SuppressLint("InflateParams")
-            final View dialogRootView = inflater.inflate(R.layout.list_item_prediction_long_click_dialog, null);
+            final View dialogRootView = inflater.inflate(
+                    mResultFilter == PredictionsFragment.RESULT_FILTER_WRONG ?
+                            R.layout.list_item_prediction_long_click_dialog_wrong :
+                            mResultFilter == PredictionsFragment.RESULT_FILTER_RIGHT ?
+                                    R.layout.list_item_prediction_long_click_dialog_right :
+                                    R.layout.list_item_prediction_long_click_dialog_open,
+                    null);
 
             final Button bRight = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_right);
-            bRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_RIGHT);
-                    mLongClickDialog.dismiss();
-                }
-            });
+            if (bRight != null)
+                bRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_RIGHT);
+                        mLongClickDialog.dismiss();
+                    }
+                });
 
             final Button bWrong = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_wrong);
-            bWrong.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_WRONG);
-                    mLongClickDialog.dismiss();
-                }
-            });
+            if (bWrong != null)
+                bWrong.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_WRONG);
+                        mLongClickDialog.dismiss();
+                    }
+                });
+
+            final Button bReopen = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_reopen);
+            if (bReopen != null)
+                bReopen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Context context = itemView.getContext();
+                        final int pos = getAdapterPosition();
+                        mCursor.moveToPosition(pos);
+                        final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
+                        PredictionsProvider.Util.setPredictionResult(context, remId, PredictionsFragment.RESULT_FILTER_OPEN);
+                        expanded.remove(remId);
+                        notifyItemRemoved(pos);
+                        mLongClickDialog.dismiss();
+                    }
+                });
 
             final Button bDelete = (Button) dialogRootView.findViewById(R.id.list_item_prediction_long_click_dialog_delete);
             bDelete.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +152,9 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
     private Cursor mCursor;
     private Set<Long> expanded = new HashSet<>();
 
-    public PredictionsAdapter() {}
+    public PredictionsAdapter(int resultFilter) {
+        mResultFilter = resultFilter;
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -242,7 +269,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                 .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PredictionsProvider.Util.setPredictionResult(context, remId, 0);
+                        PredictionsProvider.Util.setPredictionResult(context, remId, mResultFilter);
                     }
                 })
                 .show();

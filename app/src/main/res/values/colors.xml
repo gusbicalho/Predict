@@ -2,4 +2,11 @@
 <resources>
     <color name="dismiss_right">#4CAF50</color>
     <color name="dismiss_wrong">#FF5722</color>
+
+    <color name="primary">#673AB7</color> <!-- 500 -->
+    <color name="primary_dark">#512DA8</color> <!-- 700 -->
+    <color name="primary_light">#D1C4E9</color> <!-- 100 -->
+    <color name="accent">#FFC107</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
 </resources>

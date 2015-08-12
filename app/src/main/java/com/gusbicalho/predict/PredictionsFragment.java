@@ -1,6 +1,5 @@
 package com.gusbicalho.predict;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +17,6 @@ import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
 import com.gusbicalho.predict.util.DividerItemDecoration;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class PredictionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int PREDICTIONS_LOADER = 0;
@@ -26,22 +24,23 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String RESULT_FILTER = "RESULT_FILTER";
+    public static final int RESULT_FILTER_OPEN = 0;
+    public static final int RESULT_FILTER_RIGHT = 1;
+    public static final int RESULT_FILTER_WRONG = -1;
 
+    private int mResultFilter = 0;
     private PredictionsAdapter mPredictionsAdapter;
-    private RecyclerView mRecyclerView;
     private View mEmptyView;
-    private FloatingActionButton mFabNewPrediction;
-    private PredictionsItemTouchHelper mItemTouchHelper;
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PredictionsFragment newInstance(int sectionNumber) {
+    public static PredictionsFragment newInstance(int resultFilter) {
         PredictionsFragment fragment = new PredictionsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putInt(RESULT_FILTER, (int) Math.signum(resultFilter));
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,12 +64,17 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mResultFilter = arguments.getInt(RESULT_FILTER, RESULT_FILTER_OPEN);
+        }
 
         mEmptyView = rootView.findViewById(R.id.recyclerview_prediction_empty);
 
-        mFabNewPrediction = (FloatingActionButton) rootView.findViewById(R.id.fab_new_prediction);
-        mFabNewPrediction.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton fabNewPrediction = (FloatingActionButton) rootView.findViewById(R.id.fab_new_prediction);
+        fabNewPrediction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getActivity() instanceof Callback)
@@ -78,25 +82,23 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
             }
         });
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_prediction);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_prediction);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(
                 new DividerItemDecoration(getActivity(), null, true, true));
 
-        mPredictionsAdapter = new PredictionsAdapter();
-        mRecyclerView.setAdapter(mPredictionsAdapter);
-        mItemTouchHelper = new PredictionsItemTouchHelper(mPredictionsAdapter);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        mPredictionsAdapter = new PredictionsAdapter(mResultFilter);
+        recyclerView.setAdapter(mPredictionsAdapter);
+
+        if (mResultFilter == RESULT_FILTER_OPEN) {
+            PredictionsItemTouchHelper itemTouchHelper = new PredictionsItemTouchHelper(mPredictionsAdapter);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        } else {
+            fabNewPrediction.setVisibility(View.GONE);
+        }
 
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     @Override
@@ -104,7 +106,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         return new CursorLoader(getActivity(),
                 PredictionsContract.PredictionEntry.CONTENT_URI,
                 PredictionsProvider.Util.PREDICTION_PROJECTION,
-                PredictionsContract.PredictionEntry.COLUMN_RESULT + " = 0",
+                PredictionsContract.PredictionEntry.COLUMN_RESULT + " = " + mResultFilter,
                 null, PredictionsContract.PredictionEntry.COLUMN_CREATION_DATE + " DESC");
     }
 
@@ -112,7 +114,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.moveToFirst())
             mEmptyView.setVisibility(View.GONE);
-        else
+        else if (mResultFilter == RESULT_FILTER_OPEN)
             mEmptyView.setVisibility(View.VISIBLE);
         mPredictionsAdapter.swapCursor(data);
     }

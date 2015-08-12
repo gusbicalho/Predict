@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:divider="?android:attr/listDivider"
+              android:showDividers="middle">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/long_click_prediction_dialog_button_wrong"
+        android:id="@+id/list_item_prediction_long_click_dialog_wrong"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/long_click_prediction_dialog_button_reopen"
+        android:id="@+id/list_item_prediction_long_click_dialog_reopen"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/long_click_prediction_dialog_button_delete"
+        android:id="@+id/list_item_prediction_long_click_dialog_delete"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+</LinearLayout>

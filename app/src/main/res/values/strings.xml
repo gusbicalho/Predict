@@ -56,5 +56,13 @@
     <string name="edit_prediction_answer_range_label_exclusive">&lt; x &lt;</string>
     <string name="edit_prediction_hint_confidence">How confident are you?</string>
     <string name="edit_prediction_confidence_value_label"><xliff:g id="confidence">%1$d</xliff:g>%%</string>
+    <string name="nav_drawer_item_predictions_open">Open Predictions</string>
+    <string name="nav_drawer_item_predictions_right">Got Right</string>
+    <string name="nav_drawer_item_predictions_wrong">Got Wrong</string>
+    <string name="nav_drawer_item_stats">Your Statistics</string>
+    <string name="long_click_prediction_dialog_button_delete">Delete prediction</string>
+    <string name="long_click_prediction_dialog_button_wrong">Got wrong!</string>
+    <string name="long_click_prediction_dialog_button_right">Got right!</string>
+    <string name="long_click_prediction_dialog_button_reopen">Reopen prediction</string>
 
 </resources>
