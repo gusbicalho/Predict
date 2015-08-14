@@ -37,8 +37,10 @@ public class NewPredictionFragment extends DialogFragment {
     private static final int ANSWER_SELECTOR_INDEX_INCLUSIVE_RANGE = 3;
     private static final int ANSWER_SELECTOR_INDEX_EXCLUSIVE_RANGE = 4;
 
-    private static final int CONFIDENCE_MAX = 100;
-    private static final int CONFIDENCE_DEFAULT = 50;
+    public static final double[] CREDENCE_SCORES = new double[]{
+            0.5, 0.6, 0.7, 0.8, 0.9, 0.99
+    };
+    private static final int CREDENCE_INDEX_DEFAULT = 1;
 
     private String[] mAnswerSelectorOptions;
     private Spinner mAnswerSelector;
@@ -48,8 +50,8 @@ public class NewPredictionFragment extends DialogFragment {
     private TextView mAnswerRangeLabel;
     private EditText mAnswerRangeMin;
     private EditText mAnswerRangeMax;
-    private SeekBar mConfidenceSelector;
-    private TextView mConfidenceValueLabel;
+    private SeekBar mCredenceSelector;
+    private TextView mCredenceValueLabel;
     private EditText mQuestion;
     private EditText mDetail;
 
@@ -99,8 +101,8 @@ public class NewPredictionFragment extends DialogFragment {
         mAnswerRangeLabel = (TextView) rootView.findViewById(R.id.edit_prediction_answer_range_label);
         mAnswerRangeMin = (EditText) rootView.findViewById(R.id.edit_prediction_answer_range_min);
         mAnswerRangeMax = (EditText) rootView.findViewById(R.id.edit_prediction_answer_range_max);
-        mConfidenceSelector = (SeekBar) rootView.findViewById(R.id.edit_prediction_confidence);
-        mConfidenceValueLabel = (TextView) rootView.findViewById(R.id.edit_prediction_confidence_value_label);
+        mCredenceSelector = (SeekBar) rootView.findViewById(R.id.edit_prediction_credence);
+        mCredenceValueLabel = (TextView) rootView.findViewById(R.id.edit_prediction_credence_value_label);
 
         mAnswerSelector.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mAnswerSelectorOptions));
         mAnswerSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -130,20 +132,24 @@ public class NewPredictionFragment extends DialogFragment {
             }
         });
 
-        mConfidenceSelector.setMax(CONFIDENCE_MAX);
-        mConfidenceSelector.setProgress(CONFIDENCE_DEFAULT);
-        mConfidenceValueLabel.setText(getString(R.string.edit_prediction_confidence_value_label, CONFIDENCE_DEFAULT));
-        mConfidenceSelector.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mCredenceSelector.setMax(CREDENCE_SCORES.length - 1);
+        mCredenceSelector.setProgress(CREDENCE_INDEX_DEFAULT);
+        mCredenceValueLabel.setText(
+                getString(R.string.edit_prediction_credence_value_label,
+                        (int) (CREDENCE_SCORES[CREDENCE_INDEX_DEFAULT] * 100.0)));
+        mCredenceSelector.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mConfidenceValueLabel.setText(getString(R.string.edit_prediction_confidence_value_label, progress));
+                mCredenceValueLabel.setText(getString(R.string.edit_prediction_credence_value_label, (int) (CREDENCE_SCORES[progress] * 100)));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
 
@@ -157,7 +163,7 @@ public class NewPredictionFragment extends DialogFragment {
     private void saveAction() {
         final String question = mQuestion.getText().toString();
         final String detail = mDetail.getText().toString().trim();
-        final double confidence = mConfidenceSelector.getProgress()/(double)CONFIDENCE_MAX;
+        final double credence = CREDENCE_SCORES[mCredenceSelector.getProgress()];
 
         if (question.isEmpty()) {
             saveFailed(R.string.edit_prediction_notice_save_failed_no_question);
@@ -219,7 +225,7 @@ public class NewPredictionFragment extends DialogFragment {
             @Override
             protected Long doInBackground(Void... params) {
                 return PredictionsProvider.Util.insertPrediction(getActivity(),
-                        question, detail.isEmpty() ? null : detail, answerType, answer, confidence);
+                        question, detail.isEmpty() ? null : detail, answerType, answer, credence);
             }
 
             @Override

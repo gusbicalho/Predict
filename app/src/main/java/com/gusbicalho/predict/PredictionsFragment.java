@@ -2,7 +2,6 @@ package com.gusbicalho.predict;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -64,7 +63,7 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_predictions, container, false);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -72,15 +71,6 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         }
 
         mEmptyView = rootView.findViewById(R.id.recyclerview_prediction_empty);
-
-        final FloatingActionButton fabNewPrediction = (FloatingActionButton) rootView.findViewById(R.id.fab_new_prediction);
-        fabNewPrediction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() instanceof Callback)
-                    ((Callback) getActivity()).onNewPredictionAction();
-            }
-        });
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_prediction);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -94,8 +84,6 @@ public class PredictionsFragment extends Fragment implements LoaderManager.Loade
         if (mResultFilter == RESULT_FILTER_OPEN) {
             PredictionsItemTouchHelper itemTouchHelper = new PredictionsItemTouchHelper(mPredictionsAdapter);
             itemTouchHelper.attachToRecyclerView(recyclerView);
-        } else {
-            fabNewPrediction.setVisibility(View.GONE);
         }
 
         return rootView;

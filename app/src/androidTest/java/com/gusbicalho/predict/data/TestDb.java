@@ -81,7 +81,7 @@ public class TestDb extends AndroidTestCase {
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry._ID);
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_QUESTION);
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_DETAIL);
-            predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE);
+            predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_CREDENCE);
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE);
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT);
             predictionColumnHashSet.add(PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN);

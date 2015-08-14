@@ -65,7 +65,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, (String) null);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_BOOLEAN);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_BOOLEAN, true);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.3d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CREDENCE, 0.3d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
@@ -75,7 +75,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_DETAIL, "From Doctor Who series");
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_TEXT);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TEXT, "Mindwash of the universe");
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.1d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CREDENCE, 0.1d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
@@ -86,7 +86,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_EXCLUSIVE_RANGE);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 6.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 23.0d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.8d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CREDENCE, 0.8d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }
@@ -97,7 +97,7 @@ public class TestUtilities extends AndroidTestCase {
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_TYPE, PredictionsContract.PredictionEntry.ANSWER_TYPE_INCLUSIVE_RANGE);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MIN, 42.0d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_ANSWER_MAX, 42.0d);
-        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CONFIDENCE, 0.9d);
+        predValues.put(PredictionsContract.PredictionEntry.COLUMN_CREDENCE, 0.9d);
         predValues.put(PredictionsContract.PredictionEntry.COLUMN_RESULT, 0);
         return predValues;
     }

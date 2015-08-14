@@ -21,7 +21,7 @@ public class PredictionsDbHelper extends SQLiteOpenHelper {
                 PredictionEntry._ID + " INTEGER PRIMARY KEY," +
                 PredictionEntry.COLUMN_QUESTION + " TEXT NOT NULL, " +
                 PredictionEntry.COLUMN_DETAIL + " TEXT, " +
-                PredictionEntry.COLUMN_CONFIDENCE + " REAL NOT NULL, " +
+                PredictionEntry.COLUMN_CREDENCE + " REAL NOT NULL, " +
                 PredictionEntry.COLUMN_ANSWER_TYPE + " INTEGER NOT NULL, " +
                 PredictionEntry.COLUMN_ANSWER_TEXT + " TEXT, " +
                 PredictionEntry.COLUMN_ANSWER_BOOLEAN + " INTEGER, " +

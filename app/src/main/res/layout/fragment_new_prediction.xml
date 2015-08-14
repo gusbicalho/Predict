@@ -124,17 +124,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:text="@string/edit_prediction_hint_confidence"
+                android:text="@string/edit_prediction_hint_credence"
                 android:textColor="@color/hint_foreground_material_light"
-                android:labelFor="@+id/edit_prediction_confidence"/>
+                android:labelFor="@+id/edit_prediction_credence"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="50%"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:labelFor="@+id/edit_prediction_confidence"
-                android:id="@+id/edit_prediction_confidence_value_label"
+                android:labelFor="@+id/edit_prediction_credence"
+                android:id="@+id/edit_prediction_credence_value_label"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"/>
         </LinearLayout>
@@ -142,8 +142,8 @@
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_prediction_confidence"
-            android:indeterminate="false"/>
+            android:id="@+id/edit_prediction_credence"
+            android:splitTrack="false"/>
     </LinearLayout>
 
     <EditText

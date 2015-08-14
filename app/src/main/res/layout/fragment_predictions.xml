@@ -1,4 +1,4 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
@@ -23,11 +23,4 @@
             android:gravity="center_horizontal"
             android:visibility="gone"/>
     </FrameLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:id="@+id/fab_new_prediction"
-        android:src="@drawable/ic_add_white_24dp"/>
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

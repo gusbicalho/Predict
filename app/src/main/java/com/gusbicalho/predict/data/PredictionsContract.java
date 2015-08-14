@@ -34,7 +34,7 @@ public class PredictionsContract {
         public static final String COLUMN_ANSWER_BOOLEAN = "answerBoolean";
         public static final String COLUMN_ANSWER_MIN = "answerMin";
         public static final String COLUMN_ANSWER_MAX = "answerMax";
-        public static final String COLUMN_CONFIDENCE = "confidence";
+        public static final String COLUMN_CREDENCE = "credence";
         public static final String COLUMN_CREATION_DATE = "creationDate";
         public static final String COLUMN_RESULT = "result";
 

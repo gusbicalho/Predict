@@ -39,7 +39,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         public final TextView mAnswer;
         @Nullable
         public final TextView mDetail;
-        public final TextView mConfidence;
+        public final TextView mCredence;
         public final TextView mCreationDate;
         private Long mPredictionId;
         private AlertDialog mLongClickDialog;
@@ -52,7 +52,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
             mQuestion = (TextView) view.findViewById(R.id.list_item_prediction_question);
             mDetail = (TextView) view.findViewById(R.id.list_item_prediction_detail);
             mAnswer = (TextView) view.findViewById(R.id.list_item_prediction_answer);
-            mConfidence = (TextView) view.findViewById(R.id.list_item_prediction_confidence);
+            mCredence = (TextView) view.findViewById(R.id.list_item_prediction_credence);
             mCreationDate = (TextView) view.findViewById(R.id.list_item_prediction_creation_date);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
@@ -181,9 +181,9 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         Context context = viewHolder.mAnswer.getContext();
         viewHolder.mContainer.setTranslationX(0.0f);
         viewHolder.mQuestion.setText(mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION));
-        viewHolder.mConfidence.setText(
-                context.getString(R.string.prediction_confidence,
-                        100.0 * mCursor.getDouble(PredictionsProvider.Util.INDEX_CONFIDENCE)));
+        viewHolder.mCredence.setText(
+                context.getString(R.string.prediction_credence,
+                        100.0 * mCursor.getDouble(PredictionsProvider.Util.INDEX_CREDENCE)));
         if (viewHolder.mDetail != null) {
             String detail = mCursor.getString(PredictionsProvider.Util.INDEX_DETAIL);
             viewHolder.mDetail.setText(

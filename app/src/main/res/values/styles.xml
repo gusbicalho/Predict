@@ -5,13 +5,16 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
     </style>
 
-    <style name="Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="AppTheme.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
-        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.PagerStrip" parent="@style/AppTheme.Toolbar">
+
     </style>
 
     <style name="AppTheme.Main" parent="@style/AppTheme">
@@ -19,11 +22,14 @@
     </style>
 
     <style name="ActionBar.Solid.Predict" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="displayOptions">none</item>
+        <item name="displayOptions">showTitle|showHome</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
     </style>
     <style name="AppTheme.NewPredictionActivity" parent="@style/AppTheme.ActionBar">
         <item name="android:homeAsUpIndicator">@drawable/ic_clear_white_24dp</item>
