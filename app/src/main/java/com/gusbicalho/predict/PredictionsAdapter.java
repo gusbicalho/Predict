@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -99,10 +101,22 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                         final int pos = getAdapterPosition();
                         mCursor.moveToPosition(pos);
                         final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
-                        PredictionsProvider.Util.setPredictionResult(context, remId, PredictionsFragment.RESULT_FILTER_OPEN);
-                        expanded.remove(remId);
-                        notifyItemRemoved(pos);
-                        mLongClickDialog.dismiss();
+
+                        new AsyncTask<Void, Void, Boolean>() {
+                            @Override
+                            protected Boolean doInBackground(Void... params) {
+                                return PredictionsProvider.Util.setPredictionResult(context, remId, PredictionsFragment.RESULT_FILTER_OPEN);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean removed) {
+                                if (!removed)
+                                    return;
+                                expanded.remove(remId);
+                                notifyItemRemoved(pos);
+                                mLongClickDialog.dismiss();
+                            }
+                        }.execute();
                     }
                 });
 
@@ -247,7 +261,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         return mCursor;
     }
 
-    public void dismiss(RecyclerView.ViewHolder viewHolder, int direction) {
+    public void dismiss(final RecyclerView.ViewHolder viewHolder, final int direction) {
         final Context context = viewHolder.itemView.getContext();
 
         final int pos = viewHolder.getAdapterPosition();
@@ -255,27 +269,43 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
         final String question = mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION);
 
-        PredictionsProvider.Util.setPredictionResult(context, remId, direction == SWIPE_DIRECTION_RIGHT ? 1 : -1);
-        expanded.remove(remId);
-        notifyItemRemoved(pos);
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return PredictionsProvider.Util.setPredictionResult(context, remId, direction == SWIPE_DIRECTION_RIGHT ? 1 : -1);
+            }
 
-        String msg = context.getString(
-                direction == SWIPE_DIRECTION_RIGHT ?
-                        R.string.prediction_dismiss_snackbar_right :
-                        R.string.prediction_dismiss_snackbar_wrong,
-                question
-        );
-        Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
-                .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PredictionsProvider.Util.setPredictionResult(context, remId, mResultFilter);
-                    }
-                })
-                .show();
+            @Override
+            protected void onPostExecute(Boolean removed) {
+                if (!removed)
+                    return;
+                expanded.remove(remId);
+                notifyItemRemoved(pos);
+
+                String msg = context.getString(
+                        direction == SWIPE_DIRECTION_RIGHT ?
+                                R.string.prediction_dismiss_snackbar_right :
+                                R.string.prediction_dismiss_snackbar_wrong,
+                        question
+                );
+                Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new AsyncTask<Void, Void, Boolean>() {
+                                    @Override
+                                    protected Boolean doInBackground(Void... params) {
+                                        return PredictionsProvider.Util.setPredictionResult(context, remId, mResultFilter);
+                                    }
+                                }.execute();
+                            }
+                        })
+                        .show();
+            }
+        }.execute();
     }
 
-    public void delete(RecyclerView.ViewHolder viewHolder) {
+    public void delete(final RecyclerView.ViewHolder viewHolder) {
         final Context context = viewHolder.itemView.getContext();
 
         final int pos = viewHolder.getAdapterPosition();
@@ -302,18 +332,35 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
             }
         }
 
-        PredictionsProvider.Util.removePrediction(context, remId);
-        expanded.remove(remId);
-        notifyItemRemoved(pos);
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return PredictionsProvider.Util.removePrediction(context, remId);
+            }
 
-        String msg = context.getString(R.string.prediction_dismiss_snackbar_delete, question);
-        Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
-                .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        context.getContentResolver().insert(PredictionsContract.PredictionEntry.CONTENT_URI, predValues);
-                    }
-                })
-                .show();
+            @Override
+            protected void onPostExecute(Boolean removed) {
+                if (!removed)
+                    return;
+                expanded.remove(remId);
+                notifyItemRemoved(pos);
+
+                String msg = context.getString(R.string.prediction_dismiss_snackbar_delete, question);
+                Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new AsyncTask<Void, Void, Uri>() {
+                                    @Override
+                                    protected Uri doInBackground(Void... params) {
+                                        return context.getContentResolver().insert(PredictionsContract.PredictionEntry.CONTENT_URI, predValues);
+                                    }
+                                }.execute();
+
+                            }
+                        })
+                        .show();
+            }
+        }.execute();
     }
 }
