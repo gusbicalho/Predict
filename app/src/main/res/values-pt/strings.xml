@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+    <string name="app_name">Predict</string>
+    <string name="action_prediction_save">Salvar</string>
+    <string name="action_settings">Configurações</string>
+    <string name="calibration_graph_label_reference">Calibração perfeita</string>
+    <string name="calibration_graph_label_score">%% de previsões corretas</string>
+    <string name="edit_prediction_hint_answer_range_max">Máximo</string>
+    <string name="edit_prediction_hint_answer_range_min">Mínimo</string>
+    <string name="edit_prediction_hint_answer_selector">Qual é a resposta?</string>
+    <string name="edit_prediction_hint_answer_text">Escreva sua (breve) resposta aqui</string>
+    <string name="edit_prediction_hint_credence">Quão certo você está?</string>
+    <string name="edit_prediction_hint_detail">Alguma observação a respeito?</string>
+    <string name="edit_prediction_hint_question">Qual é a pergunta?</string>
+    <string name="edit_prediction_notice_save_failed_no_answer">Por favor, escolha uma resposta!</string>
+    <string name="edit_prediction_notice_save_failed_no_question">Por favor, escreva a pergunta!</string>
+    <string name="edit_prediction_notice_saved">Previsão salva</string>
+    <string name="empty_prediction_list">Nenhuma previsão em aberto. Faça uma agora!</string>
+    <string name="list_item_dismiss_right_description">Acertei</string>
+    <string name="list_item_dismiss_wrong_description">Errei</string>
+    <string name="long_click_prediction_dialog_button_delete">Apagar previsão</string>
+    <string name="long_click_prediction_dialog_button_reopen">Reabrir previsão</string>
+    <string name="long_click_prediction_dialog_button_right">Acertei!</string>
+    <string name="long_click_prediction_dialog_button_wrong">Errei!</string>
+    <string name="new_prediction_discard_dialog_discard_button">Descartar</string>
+    <string name="new_prediction_discard_dialog_keep_editing_button">Continuar editando</string>
+    <string name="new_prediction_discard_dialog_message">Descartar a previsão?</string>
+    <string name="prediction_answer_false">Não!</string>
+    <string name="prediction_answer_selector_false">Não!</string>
+    <string name="prediction_answer_selector_exclusive_range">Intervalo exclusivo (informe abaixo)</string>
+    <string name="prediction_answer_selector_inclusive_range">Intervalo inclusivo (informe abaixo)</string>
+    <string name="prediction_answer_selector_text">Texto (escreva abaixo)</string>
+    <string name="prediction_answer_selector_true">Sim!</string>
+    <string name="prediction_answer_true">Sim!</string>
+    <string name="prediction_dismiss_snackbar_delete">Apagou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_right">Acertou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_undo">Desfazer</string>
+    <string name="prediction_dismiss_snackbar_wrong">Errou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="tab_title_predictions_open">Em aberto</string>
+    <string name="tab_title_predictions_right">Acertos</string>
+    <string name="tab_title_predictions_wrong">Erros</string>
+    <string name="tab_title_stats">Seus pontos</string>
+    <string name="title_activity_new_prediction">Nova previsão</string>
+</resources>
