@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
     /*
