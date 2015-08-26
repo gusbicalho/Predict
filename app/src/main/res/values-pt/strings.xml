@@ -41,4 +41,5 @@
     <string name="tab_title_predictions_wrong">Erros</string>
     <string name="tab_title_stats">Seus pontos</string>
     <string name="title_activity_new_prediction">Nova previsão</string>
+    <string name="stats_score_label">Pontuação:</string>
 </resources>

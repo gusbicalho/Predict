@@ -59,5 +59,6 @@
 
     <string name="calibration_graph_label_score">%% of correct predictions</string>
     <string name="calibration_graph_label_reference">Perfect calibration</string>
+    <string name="stats_score_label">Your Score:</string>
 
 </resources>

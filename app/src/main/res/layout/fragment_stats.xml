@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Score:"
+        android:text="@string/stats_score_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -34,6 +34,5 @@
         android:layout_below="@+id/stats_main_score"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>
