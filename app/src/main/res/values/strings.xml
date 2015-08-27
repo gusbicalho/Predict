@@ -8,12 +8,12 @@
 
     <string name="empty_prediction_list">No pending predictions. Make one now!</string>
 
-    <string name="prediction_credence"><xliff:g id="credence">%1$1.0f</xliff:g>%%</string>
+    <string name="prediction_credence" translatable="false"><xliff:g id="credence">%1$1.0f</xliff:g>%%</string>
     <string name="prediction_detail">Obs: <xliff:g id="detail_text">%1$1s</xliff:g></string>
     <string name="prediction_answer_true">Yes!</string>
     <string name="prediction_answer_false">No!</string>
-    <string name="prediction_answer_exclusive_range"><xliff:g id="min">%1$g</xliff:g> &lt; x &lt; <xliff:g id="max">%2$g</xliff:g></string>
-    <string name="prediction_answer_inclusive_range"><xliff:g id="min">%1$g</xliff:g> &#8804; x &#8804; <xliff:g id="max">%2$g</xliff:g></string>
+    <string name="prediction_answer_exclusive_range" translatable="false"><xliff:g id="min">%1$g</xliff:g> &lt; x &lt; <xliff:g id="max">%2$g</xliff:g></string>
+    <string name="prediction_answer_inclusive_range" translatable="false"><xliff:g id="min">%1$g</xliff:g> &#8804; x &#8804; <xliff:g id="max">%2$g</xliff:g></string>
     <string name="prediction_dismiss_snackbar_right">Got one right: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_wrong">Got one wrong: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_delete">Deleted: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
@@ -42,10 +42,10 @@
     <string name="edit_prediction_hint_answer_text">Write your (short) answer here</string>
     <string name="edit_prediction_hint_answer_range_min">Minimum</string>
     <string name="edit_prediction_hint_answer_range_max">Maximum</string>
-    <string name="edit_prediction_answer_range_label_inclusive">&#8804; x &#8804;</string>
-    <string name="edit_prediction_answer_range_label_exclusive">&lt; x &lt;</string>
+    <string name="edit_prediction_answer_range_label_inclusive" translatable="false">&#8804; x &#8804;</string>
+    <string name="edit_prediction_answer_range_label_exclusive" translatable="false">&lt; x &lt;</string>
     <string name="edit_prediction_hint_credence">How confident are you?</string>
-    <string name="edit_prediction_credence_value_label"><xliff:g id="credence">%1$d</xliff:g>%%</string>
+    <string name="edit_prediction_credence_value_label" translatable="false"><xliff:g id="credence">%1$d</xliff:g>%%</string>
 
     <string name="tab_title_predictions_open">Open</string>
     <string name="tab_title_predictions_right">Got right</string>
