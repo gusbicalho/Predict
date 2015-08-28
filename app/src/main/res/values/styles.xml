@@ -13,10 +13,6 @@
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
 
-    <style name="AppTheme.Toolbar.PagerStrip" parent="@style/AppTheme.Toolbar">
-
-    </style>
-
     <style name="AppTheme.Main" parent="@style/AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.Predict</item>
     </style>
@@ -25,13 +21,13 @@
         <item name="displayOptions">showTitle|showHome</item>
     </style>
 
-    <style name="AppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.WithActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
     </style>
-    <style name="AppTheme.NewPredictionActivity" parent="@style/AppTheme.ActionBar">
+    <style name="AppTheme.NewPredictionActivity" parent="@style/AppTheme.WithActionBar">
         <item name="android:homeAsUpIndicator">@drawable/ic_clear_white_24dp</item>
     </style>
 
