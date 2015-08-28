@@ -21,6 +21,10 @@
 
     <string name="list_item_dismiss_wrong_description">Got wrong</string>
     <string name="list_item_dismiss_right_description">Got right</string>
+    <string name="list_item_prediction_action_delete">Delete\nprediction</string>
+    <string name="list_item_prediction_action_wrong">Got wrong!</string>
+    <string name="list_item_prediction_action_right">Got right!</string>
+    <string name="list_item_prediction_action_reopen">Reopen\nprediction</string>
 
     <string name="prediction_answer_selector_true">Yes!</string>
     <string name="prediction_answer_selector_false">No!</string>

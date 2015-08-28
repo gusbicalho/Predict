@@ -43,4 +43,8 @@
     <string name="title_activity_new_prediction">Nova previsão</string>
     <string name="stats_score_label">Pontuação:</string>
     <string name="prediction_detail">Obs: <xliff:g id="detail_text">%1$1s</xliff:g></string>
+    <string name="list_item_prediction_action_delete">Apagar\nprevisão</string>
+    <string name="list_item_prediction_action_reopen">Reabrir\nprevisão</string>
+    <string name="list_item_prediction_action_right">Acertei!</string>
+    <string name="list_item_prediction_action_wrong">Errei!</string>
 </resources>

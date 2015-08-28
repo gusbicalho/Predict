@@ -37,82 +37,139 @@
             android:contentDescription="@string/list_item_dismiss_wrong_description"/>
     </FrameLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
         android:id="@+id/list_item_container"
-        android:background="@drawable/touch_selector"
-        android:baselineAligned="false">
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:background="@drawable/touch_selector">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="20dp"
-            android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material">
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="8dp"
+            android:id="@+id/list_item_expanded_info_container"
+            android:baselineAligned="false">
 
-            <TextView
-                tools:text="Prediction short description?"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
+                android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material">
+
+                <TextView
+                    tools:text="Prediction short description?"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_prediction_question"
+                    android:textSize="@dimen/abc_text_size_subhead_material"
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    tools:text="Answer! Bacon ipsum dolor amet pastrami ground round pork, ham hock bacon alcatra shoulder pork belly leberkas tail tenderloin flank salami boudin short loin."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_prediction_answer"
+                    android:textSize="@dimen/abc_text_size_body_1_material"
+                    android:textColor="@color/abc_secondary_text_material_light"
+                    android:minLines="2"/>
+
+                <TextView
+                    tools:text="Obs: Bacon ipsum dolor amet pastrami ground round pork."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_prediction_detail"
+                    android:textSize="@dimen/abc_text_size_body_1_material"
+                    android:textColor="@color/abc_secondary_text_material_light"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_item_prediction_question"
-                android:textSize="@dimen/abc_text_size_subhead_material"
-                android:textColor="@color/primary_text_default_material_light"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
+                android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp">
 
-            <TextView
-                tools:text="Answer! Bacon ipsum dolor amet pastrami ground round pork, ham hock bacon alcatra shoulder pork belly leberkas tail tenderloin flank salami boudin short loin."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/list_item_prediction_answer"
-                android:textSize="@dimen/abc_text_size_body_1_material"
-                android:textColor="@color/abc_secondary_text_material_light"
-                android:minLines="2"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Aug 11, 15"
+                    android:id="@+id/list_item_prediction_creation_date"
+                    android:layout_gravity="end"/>
 
-            <TextView
-                tools:text="Obs: Bacon ipsum dolor amet pastrami ground round pork."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/list_item_prediction_detail"
-                android:textSize="@dimen/abc_text_size_body_1_material"
-                android:textColor="@color/abc_secondary_text_material_light"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="30%"
+                    android:id="@+id/list_item_prediction_credence"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:layout_gravity="end"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp">
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="false"
+            android:gravity="end"
+            android:paddingBottom="14dp"
+            android:layout_below="@+id/list_item_expanded_info_container">
 
-            <TextView
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Aug 11, 15"
-                android:id="@+id/list_item_prediction_creation_date"
-                android:layout_gravity="end"/>
+                android:layout_height="match_parent"
+                android:text="@string/list_item_prediction_action_right"
+                android:id="@+id/list_item_expanded_button_right"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                />
 
-            <TextView
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="30%"
-                android:id="@+id/list_item_prediction_credence"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/primary_text_default_material_light"
-                android:layout_gravity="end"/>
+                android:layout_height="match_parent"
+                android:text="@string/list_item_prediction_action_wrong"
+                android:id="@+id/list_item_expanded_button_wrong"
+                />
 
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/list_item_prediction_action_reopen"
+                android:id="@+id/list_item_expanded_button_reopen"
+                android:singleLine="false"
+                />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/list_item_prediction_action_delete"
+                android:id="@+id/list_item_expanded_button_delete"
+                />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </FrameLayout>

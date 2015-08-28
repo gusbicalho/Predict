@@ -43,6 +43,10 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         public final TextView mDetail;
         public final TextView mCredence;
         public final TextView mCreationDate;
+        public final View mActionRight;
+        public final View mActionWrong;
+        public final View mActionReopen;
+        public final View mActionDelete;
         private Long mPredictionId;
         private AlertDialog mLongClickDialog;
         public PredictionsAdapterViewHolder(View view) {
@@ -56,8 +60,46 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
             mAnswer = (TextView) view.findViewById(R.id.list_item_prediction_answer);
             mCredence = (TextView) view.findViewById(R.id.list_item_prediction_credence);
             mCreationDate = (TextView) view.findViewById(R.id.list_item_prediction_creation_date);
+            mActionRight = view.findViewById(R.id.list_item_expanded_button_right);
+            mActionWrong = view.findViewById(R.id.list_item_expanded_button_wrong);
+            mActionReopen = view.findViewById(R.id.list_item_expanded_button_reopen);
+            mActionDelete = view.findViewById(R.id.list_item_expanded_button_delete);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
+
+            if (mActionRight != null && mActionWrong != null &&
+                    mActionReopen != null && mActionDelete != null) {
+                (mResultFilter == PredictionsFragment.RESULT_FILTER_WRONG ?
+                        mActionWrong :
+                        mResultFilter == PredictionsFragment.RESULT_FILTER_RIGHT ?
+                                mActionRight :
+                                mActionReopen).setVisibility(View.GONE);
+                mActionRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_RIGHT);
+                    }
+                });
+                mActionWrong.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss(PredictionsAdapterViewHolder.this, SWIPE_DIRECTION_WRONG);
+                    }
+                });
+                mActionReopen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        reopen(PredictionsAdapterViewHolder.this);
+                    }
+                });
+                mActionDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        delete(PredictionsAdapterViewHolder.this);
+                    }
+                });
+            }
+
             mLongClickDialog = makeLongClickDialog();
         }
 
@@ -97,26 +139,8 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                 bReopen.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Context context = itemView.getContext();
-                        final int pos = getAdapterPosition();
-                        mCursor.moveToPosition(pos);
-                        final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
-
-                        new AsyncTask<Void, Void, Boolean>() {
-                            @Override
-                            protected Boolean doInBackground(Void... params) {
-                                return PredictionsProvider.Util.setPredictionResult(context, remId, PredictionsFragment.RESULT_FILTER_OPEN);
-                            }
-
-                            @Override
-                            protected void onPostExecute(Boolean removed) {
-                                if (!removed)
-                                    return;
-                                expanded.remove(remId);
-                                notifyItemRemoved(pos);
-                                mLongClickDialog.dismiss();
-                            }
-                        }.execute();
+                        reopen(PredictionsAdapterViewHolder.this);
+                        mLongClickDialog.dismiss();
                     }
                 });
 
@@ -144,12 +168,15 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
 
         @Override
         public void onClick(View v) {
-            if (mPredictionId != null) {
-                if (expanded.contains(mPredictionId))
-                    expanded.remove(mPredictionId);
-                else
-                    expanded.add(mPredictionId);
-                PredictionsAdapter.this.notifyDataSetChanged();
+            if (v == this.itemView) {
+                if (mPredictionId != null) {
+                    if (expanded.contains(mPredictionId))
+                        expanded.remove(mPredictionId);
+                    else
+                        expanded.add(mPredictionId);
+                    PredictionsAdapter.this.notifyDataSetChanged();
+                    return;
+                }
             }
         }
 
@@ -301,6 +328,28 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                             }
                         })
                         .show();
+            }
+        }.execute();
+    }
+
+    public void reopen(final RecyclerView.ViewHolder viewHolder) {
+        final Context context = viewHolder.itemView.getContext();
+        final int pos = viewHolder.getAdapterPosition();
+        mCursor.moveToPosition(pos);
+        final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
+
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return PredictionsProvider.Util.setPredictionResult(context, remId, PredictionsFragment.RESULT_FILTER_OPEN);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean removed) {
+                if (!removed)
+                    return;
+                expanded.remove(remId);
+                notifyItemRemoved(pos);
             }
         }.execute();
     }
