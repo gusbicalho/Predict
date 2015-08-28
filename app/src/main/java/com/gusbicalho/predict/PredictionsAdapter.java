@@ -295,6 +295,10 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         mCursor.moveToPosition(pos);
         final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
         final String question = mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION);
+        final int score = (int) PredictionsProvider.Util.calcScore(
+                mCursor.getDouble(PredictionsProvider.Util.INDEX_CREDENCE),
+                direction == SWIPE_DIRECTION_RIGHT ? 1 : -1
+        );
 
         new AsyncTask<Void, Void, Boolean>() {
             @Override
@@ -313,7 +317,7 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
                         direction == SWIPE_DIRECTION_RIGHT ?
                                 R.string.prediction_dismiss_snackbar_right :
                                 R.string.prediction_dismiss_snackbar_wrong,
-                        question
+                        question, score
                 );
                 Snackbar.make(viewHolder.itemView, msg, Snackbar.LENGTH_LONG)
                         .setAction(R.string.prediction_dismiss_snackbar_undo, new View.OnClickListener() {

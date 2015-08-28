@@ -33,9 +33,9 @@
     <string name="prediction_answer_selector_true">Sim!</string>
     <string name="prediction_answer_true">Sim!</string>
     <string name="prediction_dismiss_snackbar_delete">Apagou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
-    <string name="prediction_dismiss_snackbar_right">Acertou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_right">Acertou (<xliff:g id="prediction_score">%2$1d</xliff:g> pontos): \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="prediction_dismiss_snackbar_undo">Desfazer</string>
-    <string name="prediction_dismiss_snackbar_wrong">Errou: \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
+    <string name="prediction_dismiss_snackbar_wrong">Errou (<xliff:g id="prediction_score">%2$1d</xliff:g> pontos): \"<xliff:g id="prediction_description">%1$1s</xliff:g>\"</string>
     <string name="tab_title_predictions_open">Em aberto</string>
     <string name="tab_title_predictions_right">Acertos</string>
     <string name="tab_title_predictions_wrong">Erros</string>
