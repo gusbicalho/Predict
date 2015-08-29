@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_key_daily_notifications" translatable="false">daily_notifications</string>
+    <string name="pref_title_daily_notifications">Enable daily notifications</string>
+    <string name="pref_description_daily_notifications">Predict will remind you to make at least
+        one prediction everyday
+    </string>
+
+    <string name="pref_key_notification_time" translatable="false">daily_notifications_time</string>
+    <string name="pref_title_notification_time">Notify me at</string>
+</resources>

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity
@@ -20,14 +21,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        if (savedInstanceState == null) {
-            PredictionsFragment fragment = new PredictionsFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment, MAIN_FRAGMENT_TAG)
-                    .commit();
-        }
-        */
+        NotificationAlarm.setAlarm(this);
 
         final Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,20 +43,23 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-    /*
-    private void showPredictionsFragment(int resultFilter) {
-        PredictionsFragment fragment = PredictionsFragment.newInstance(resultFilter);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment, MAIN_FRAGMENT_TAG)
-                .commit();
-
-    }
-    */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

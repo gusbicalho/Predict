@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="@string/pref_key_daily_notifications"
+        android:title="@string/pref_title_daily_notifications"
+        android:summary="@string/pref_description_daily_notifications"
+        android:defaultValue="true" />
+
+    <com.gusbicalho.predict.util.TimePreference
+        android:dependency="daily_notifications"
+        android:key="@string/pref_key_notification_time"
+        android:title="@string/pref_title_notification_time"
+        android:defaultValue="@string/pref_default_notification_time" />
+
+</PreferenceScreen>

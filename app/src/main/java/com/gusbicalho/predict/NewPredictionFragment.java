@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.gusbicalho.predict.data.PredictionsContract;
 import com.gusbicalho.predict.data.PredictionsProvider;
+import com.gusbicalho.predict.util.Utility;
 
 public class NewPredictionFragment extends DialogFragment {
 
@@ -231,6 +232,7 @@ public class NewPredictionFragment extends DialogFragment {
             @Override
             protected void onPostExecute(Long newPredictionId) {
                 Toast.makeText(getActivity(), R.string.edit_prediction_notice_saved, Toast.LENGTH_LONG).show();
+                Utility.setLastPrediction(getActivity(), System.currentTimeMillis());
                 if (getActivity() instanceof Callback)
                     ((Callback) getActivity()).onSaveAction();
             }
