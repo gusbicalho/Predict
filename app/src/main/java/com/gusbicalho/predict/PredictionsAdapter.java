@@ -295,10 +295,10 @@ public class PredictionsAdapter extends RecyclerView.Adapter<PredictionsAdapter.
         mCursor.moveToPosition(pos);
         final long remId = mCursor.getLong(PredictionsProvider.Util.INDEX_ID);
         final String question = mCursor.getString(PredictionsProvider.Util.INDEX_QUESTION);
-        final int score = (int) PredictionsProvider.Util.calcScore(
+        final int score = (int) Math.round(PredictionsProvider.Util.calcScore(
                 mCursor.getDouble(PredictionsProvider.Util.INDEX_CREDENCE),
                 direction == SWIPE_DIRECTION_RIGHT ? 1 : -1
-        );
+        ));
 
         new AsyncTask<Void, Void, Boolean>() {
             @Override
