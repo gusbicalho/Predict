@@ -47,4 +47,9 @@
     <string name="list_item_prediction_action_reopen">Reabrir\nprevisão</string>
     <string name="list_item_prediction_action_right">Acertei!</string>
     <string name="list_item_prediction_action_wrong">Errei!</string>
+    <string name="daily_notification_title">Faça uma previsão hoje!</string>
+    <string name="pref_description_daily_notifications">Lembre-me de fazer ao menos uma previsão por dia</string>
+    <string name="pref_title_daily_notifications">Ativar notificações diárias</string>
+    <string name="pref_title_notification_time">Notifique-me às</string>
+    <string name="title_activity_settings">Configurações</string>
 </resources>

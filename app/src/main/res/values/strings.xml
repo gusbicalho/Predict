@@ -2,7 +2,7 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Predict</string>
     <string name="content_authority" translatable="false">com.gusbicalho.predict</string>
-    <string name="pref_default_notification_time" translatable="false">02:33</string>
+    <string name="pref_default_notification_time" translatable="false">18:00</string>
     <string name="pref_key_last_notification" translatable="false">last_notification</string>
 
     <string name="action_settings">Settings</string>
